@@ -192,13 +192,9 @@ export const HomeHero: React.FC = () => {
                   </a>
                 </li>
               </ul>
-              <p className="mt-3 text-sm text-stone-400/60">Socials</p>
             </div>
           </div>
 
-          <div>
-            <p className="text-center text-stone-400/60">I&apos;ll add some cool stuff here later</p>
-          </div>
         </div>
       </div>
     </div>
