@@ -23,12 +23,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const setTheme = useCallback((themeToSet: Theme | null) => {
     if (themeToSet === null) {
       window.localStorage.removeItem(themeLocalStorageKey)
+      document.cookie = `${themeLocalStorageKey}=; path=/; max-age=0`
       const implicitPreference = getImplicitPreference()
       document.documentElement.setAttribute('data-theme', implicitPreference || '')
       if (implicitPreference) setThemeState(implicitPreference)
     } else {
       setThemeState(themeToSet)
       window.localStorage.setItem(themeLocalStorageKey, themeToSet)
+      document.cookie = `${themeLocalStorageKey}=${themeToSet}; path=/; max-age=31536000; SameSite=Strict`
       document.documentElement.setAttribute('data-theme', themeToSet)
     }
   }, [])
