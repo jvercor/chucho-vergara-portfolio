@@ -130,7 +130,17 @@ export const HomeHero: React.FC = () => {
             <h1 className="text-3xl md:text-6xl font-bold mb-4 text-stone-200 tracking-tight">
               Jesus Vergara
             </h1>
-            <p className="text-lg text-stone-300">Sr. Full Stack Engineer at Engrain</p>
+            <p className="text-lg text-stone-300">
+              Sr. Full Stack Engineer at{' '}
+              <a
+                href="https://www.engrain.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-stone-100 hover:underline"
+              >
+                Engrain
+              </a>
+            </p>
 
             <div className="mt-12">
               <ul className="flex gap-5">
