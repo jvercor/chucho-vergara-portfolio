@@ -16,8 +16,8 @@ export const HomeHero: React.FC = () => {
       if (cancelled || !mountRef.current) return
 
       const container = mountRef.current
-      const w = container.clientWidth
-      const h = container.clientHeight
+      const w = window.innerWidth
+      const h = window.innerHeight
 
       const scene = new THREE.Scene()
 
@@ -82,11 +82,9 @@ export const HomeHero: React.FC = () => {
       window.addEventListener('mousemove', handleMouseMove)
 
       const handleResize = () => {
-        const rw = container.clientWidth
-        const rh = container.clientHeight
-        camera.aspect = rw / rh
+        camera.aspect = window.innerWidth / window.innerHeight
         camera.updateProjectionMatrix()
-        renderer.setSize(rw, rh)
+        renderer.setSize(window.innerWidth, window.innerHeight)
       }
       window.addEventListener('resize', handleResize)
 
@@ -122,25 +120,7 @@ export const HomeHero: React.FC = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Layer 1 – radial gradient + noise */}
-      <div className="absolute inset-0 -z-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse at 50% 20%, rgba(168, 63, 210, 0.12) 0%, rgba(36, 55, 93, 0.08) 40%, #000000 70%)',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 1800 1800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            backgroundRepeat: 'repeat',
-          }}
-        />
-      </div>
-
-      {/* Layer 2 – Three.js canvas */}
+      {/* Layer 1 – Three.js canvas */}
       <div ref={mountRef} className="absolute inset-0 z-0" />
 
       {/* Layer 3 – identity card */}
