@@ -1,5 +1,6 @@
 'use client'
 
+import type { Group, Texture } from 'three'
 import React, { useEffect, useRef } from 'react'
 
 export const HomeHero: React.FC = () => {
@@ -33,7 +34,7 @@ export const HomeHero: React.FC = () => {
       container.appendChild(renderer.domElement)
 
       const textureLoader = new THREE.TextureLoader()
-      const matcap = await new Promise<THREE.Texture>((resolve) => {
+      const matcap = await new Promise<Texture>((resolve) => {
         textureLoader.load('/matcap.png', (tex) => {
           tex.colorSpace = THREE.SRGBColorSpace
           resolve(tex)
@@ -41,7 +42,7 @@ export const HomeHero: React.FC = () => {
       })
 
       const loader = new GLTFLoader()
-      const gltf = await new Promise<{ scene: THREE.Group }>((resolve, reject) => {
+      const gltf = await new Promise<{ scene: Group }>((resolve, reject) => {
         loader.load('/model.glb', resolve as never, undefined, reject)
       })
 
