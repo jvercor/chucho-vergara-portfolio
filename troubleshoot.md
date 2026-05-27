@@ -31,7 +31,29 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
-<!-- TEMPLATE
+## `border-image` incompatible with `border-radius`
+**Date**: 2026-05-27
+**Symptom**: Applying `border-image` (image-based border) on a button ignored `border-radius` — corners stayed sharp regardless of the radius value set.
+**Root cause**: This is a CSS spec limitation. `border-image` overrides `border-style` and renders the image outside the element's shape, bypassing `border-radius` entirely.
+**Fix**: Use the CSS mask trick via a `::before` pseudo-element instead. The pseudo-element fills the button area with the image as a `background`, then a `mask` with `mask-composite: exclude` punches out the center — leaving only the border ring. Since `border-radius` is inherited by `::before`, the rounded shape is respected.
+```css
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px; /* border thickness */
+  background: url('/button.jpg') center / 105% 105% no-repeat;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+```
+
+---
+
+
 ## [short title]
 **Date**: YYYY-MM-DD
 **Symptom**: What went wrong / what error appeared
