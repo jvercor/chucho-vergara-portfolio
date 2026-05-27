@@ -2,6 +2,13 @@
 const config = {
   theme: {
     extend: {
+      colors: {
+        'neon-pink': 'var(--neon-pink)',
+        'blue-violet': 'var(--blue-violet)',
+        'dark-violet': 'var(--dark-violet)',
+        'russian-violet': 'var(--russian-violet)',
+        'surface-black': 'var(--surface-black)',
+      },
       typography: {
         DEFAULT: {
           css: [
