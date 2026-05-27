@@ -2,6 +2,7 @@
 
 import type { Group, Texture } from 'three'
 import React, { useEffect, useRef } from 'react'
+import { Button } from '@/components/ui/button'
 
 export const HomeHero: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null)
@@ -144,6 +145,14 @@ export const HomeHero: React.FC = () => {
             </p>
 
             <div className="mt-12">
+              <div className="flex flex-wrap gap-4 mb-8">
+                <Button variant="primary" asChild>
+                  <a href="/work">View My Work</a>
+                </Button>
+                <Button variant="outline" asChild>
+                  <a href="/contact">Contact Me</a>
+                </Button>
+              </div>
               <ul className="flex gap-5">
                 <li>
                   <a

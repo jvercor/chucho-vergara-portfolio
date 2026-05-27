@@ -47,6 +47,56 @@
   --font-sans: var(--font-geist-sans);
 }
 
+@layer components {
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--foreground);
+    border-radius: 0.5rem;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.25s ease;
+    white-space: nowrap;
+  }
+  /* Image border via mask trick — compatible with border-radius */
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 3px;
+    background: url('/button.jpg') center / 105% 105% no-repeat;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .btn-primary:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15);
+  }
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+  .btn-primary:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
 @layer utilities {
   .container {
     width: 100%;
