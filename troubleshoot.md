@@ -4,7 +4,15 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
-## Theme toggle `aria-label` hydration mismatch
+## Logo hydration mismatch (`src` attribute)
+**Date**: 2026-05-27
+**Symptom**: React hydration error — `src` on the `Logo` img differed between server render (`/logo-black.svg`) and client hydration (`/logo-white.svg`).
+**Root cause**: `useTheme()` returns `undefined` during SSR (no DOM access), so the server always picks the light-theme logo. After hydration, the client resolves the real theme from the cookie and picks the dark logo — causing a `src` mismatch.
+**Fix**: Applied the same `mounted` guard pattern used by `ThemeSelector`. The `src` for `variant="auto"` now resolves to the default (`/logo-black.svg`) until after mount, then switches to the theme-correct logo. Added `suppressHydrationWarning` on the `<img>` element to suppress any residual mismatch warning.
+
+---
+
+
 **Date**: 2026-05-27
 **Symptom**: React hydration warning — `aria-label` on the `ThemeSelector` button differed between server and client renders. Server rendered `"Switch to dark theme"` (theme `undefined`), client hydrated with `"Switch to light theme"` (theme `'dark'`).
 **Root cause**: The `aria-label` is derived from `theme`, which is `undefined` during SSR and resolved to `'dark'` on the client after `useEffect` runs. React flags any attribute mismatch even when `suppressHydrationWarning` is on a parent.
