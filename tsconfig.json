@@ -18,6 +18,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "isolatedModules": true,
+    "noUncheckedSideEffectImports": false,
     "plugins": [
       {
         "name": "next"
