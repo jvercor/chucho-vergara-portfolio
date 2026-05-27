@@ -63,7 +63,7 @@ export const HomeHero: React.FC = () => {
       const scale = 1.45 / maxDim
       model.scale.setScalar(scale)
       model.position.sub(center.multiplyScalar(scale))
-      model.position.y += 0.55
+      model.position.y += 0.71
 
       scene.add(model)
 
