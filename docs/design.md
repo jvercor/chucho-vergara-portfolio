@@ -58,8 +58,8 @@ Applied to content cards. Always use all three parts together:
 | Part                              | Layer              | Effect                          |
 |-----------------------------------|--------------------|---------------------------------|
 | `glass-card`                      | CSS `@layer components` | `backdrop-filter: blur(12px)` |
-| `border border-outline-variant/30`| Tailwind utility   | Subtle border at rest           |
-| `bg-surface-container-low`        | Tailwind utility   | Dark background                 |
+| `border border-border/40`         | Tailwind utility   | Adaptive border (dark: `#564051`, light: `#C4B8D8`) |
+| `bg-card/80`                      | Tailwind utility   | Semi-transparent adaptive bg (dark: `#1f1f1f`, light: `#ffffff`) |
 | `neon-glow-pink`                  | CSS `@layer components` | Pink glow box-shadow on hover |
 | `group-hover:border-neon-pink`    | Tailwind utility   | Border color change on hover    |
 | `transition-all duration-500`     | Tailwind utility   | Smooth transition               |
@@ -81,6 +81,29 @@ All text must use the project font scale. Never use raw Tailwind font sizes (`te
 | `font-mono-code text-mono-code`     | Code snippets          |
 
 Tokens are defined in `tailwind.config.mjs` under `theme.extend.fontFamily` and `theme.extend.fontSize`.
+
+---
+
+## Theme-aware text colors
+
+**Critical distinction:** most color tokens in `tailwind.config.mjs` are **static hex** — they do not change between Dark and Light Theme. Only tokens that map to a CSS custom property (via `@theme inline` in `globals.css`) adapt to the current theme.
+
+### Use these for text outside intentionally dark surfaces
+
+| Token | Dark value | Light value | Use for |
+|-------|-----------|-------------|---------|
+| `text-foreground` | `#e2e2e2` | `#120016` | Headings, primary text |
+| `text-muted-foreground` | `#dcbed3` | `#6B5F7A` | Subtitles, supporting copy |
+
+### Static tokens — do NOT use for exposed text
+
+| Token | Value (always) | Problem |
+|-------|---------------|---------|
+| `text-white` | `#ffffff` | Invisible on light background |
+| `text-on-surface` | `#e2e2e2` (dark-only) | No light mode equivalent |
+| `text-on-surface-variant` | `#dcbed3` (dark-only) | Too light on light background |
+
+**Exception:** `text-white` is acceptable *inside* Glass Cards, which maintain a dark surface (`bg-surface-container-low`) in both themes — making white text legible regardless of the page theme.
 
 ---
 

@@ -81,7 +81,9 @@ _Avoid_: CSS variables, Tailwind defaults
 ### Visual / interaction
 
 **Glass Card**:
-A visual treatment applied to content cards using three co-operating classes: `glass-card` (backdrop-filter blur only), `border border-outline-variant/30 bg-surface-container-low` (Tailwind border + background), and `neon-glow-pink` (hover box-shadow glow). Border color on hover is handled via Tailwind's `group-hover:border-neon-pink` on the card element. Always used together with `transition-all duration-500`.
+A visual treatment applied to content cards using three co-operating classes: `glass-card` (backdrop-filter blur only), `border border-border/40 bg-card/80` (Tailwind border + semi-transparent background), and `neon-glow-pink` (hover box-shadow glow). Border color on hover is handled via Tailwind's `group-hover:border-neon-pink` on the card element. Always used together with `transition-all duration-500`.
+
+`bg-card/80` (not fully opaque) is intentional — it lets the `backdrop-filter: blur(12px)` show through: dark glass in Dark Theme, frosted white/lavender in Light Theme.
 _Avoid_: Frosted card, blur card
 
 **Hero**:
