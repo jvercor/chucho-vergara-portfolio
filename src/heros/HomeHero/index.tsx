@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from '@/components/ui/button'
 
 export const HomeHero: React.FC = () => {
   return (
@@ -16,11 +17,14 @@ export const HomeHero: React.FC = () => {
             Available for new opportunities
           </span>
         </div>
-
+        <div className="font-headline-sm text-xl uppercase tracking-widest text-tertiary-fixed-dim mb-4">
+          Sr. Full-stack Engineer
+        </div>
         {/* Headline */}
         <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white tracking-tight">
           Jesus <span className="text-neon-pink">Vergara Cortes.</span>
         </h1>
+
         {/* Tagline */}
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
           I build web systems that reduce friction and drive real results — turning complex problems
@@ -29,9 +33,9 @@ export const HomeHero: React.FC = () => {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <button className="px-8 py-4 bg-neon-pink text-on-primary font-bold rounded-lg neon-glow hover:scale-105 transition-transform">
-            View Projects
-          </button>
+          <Button variant="primary" size="lg" asChild>
+            <a href="/work">View Projects</a>
+          </Button>
           <button className="px-8 py-4 bg-transparent border border-outline-variant text-white font-bold rounded-lg hover:border-neon-pink/50 transition-all">
             Get in touch
           </button>
