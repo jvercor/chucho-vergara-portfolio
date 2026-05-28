@@ -7,7 +7,7 @@ A personal portfolio site for Jesus "Chucho" Vergara, Sr. Full Stack Engineer. S
 ### Site sections
 
 **Home**:
-The landing page. Contains a hero with a Three.js 3D scene and an identity card. Surfaces featured Projects.
+The landing page. Contains a hero with a Three.js 3D scene and an identity card. Surfaces Projects.
 _Avoid_: Index, landing page
 
 **Resume**:
@@ -15,8 +15,20 @@ A dedicated page displaying Experience, Education, Skills, and Languages in a tr
 _Avoid_: CV, about
 
 **Project**:
-A portfolio piece managed as a Payload collection. Has a title, short description, cover image, tech stack tags, live URL, repo URL, featured flag, and rich-text body.
+A portfolio piece managed as a Payload collection. Has a title, short description, cover image, Stack tags, live URL, repo URL, client location, launch date, and rich-text body. Sorted by launch date descending.
 _Avoid_: Work, case study, portfolio item
+
+**Client Location**:
+A plain-text city name indicating where the client of a Project is based (e.g., "San Francisco"). Optional field on Project.
+_Avoid_: Address, region, country
+
+**Launch Date**:
+The date a Project went live publicly. Used to sort Projects chronologically. Distinct from the CMS publish date.
+_Avoid_: Published at, created at, completed at
+
+**Stack**:
+A technology or tool entry managed as a Payload collection. Referenced by Projects as tags. Has a title only. Enables future reuse across Resume visuals and other site sections.
+_Avoid_: Technology, tag, skill (see Skill for resume entries)
 
 **Post**:
 A blog entry written by the site owner. Distinct from a Project — a Post is editorial content, not a portfolio showcase.

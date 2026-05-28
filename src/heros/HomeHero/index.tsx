@@ -34,7 +34,7 @@ export const HomeHero: React.FC = () => {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Button variant="primary" size="clear" asChild>
-            <a href="/work">View Projects</a>
+            <a href="/projects">View Projects</a>
           </Button>
           <Button variant="hero-outline" size="clear" asChild>
             <a href="/contact">Get in touch</a>

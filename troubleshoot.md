@@ -4,6 +4,22 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## `slugField()` must not be spread in Payload v3 collections
+**Date**: 2026-05-28
+**Symptom**: Runtime error — "slugField is not a function or its return value is not iterable" when opening a collection entry in the admin panel.
+**Root cause**: `slugField()` from `payload` returns a single `RowField`, not an array. Spreading it (`...slugField()`) causes a runtime failure.
+**Fix**: Use `slugField()` without spread as a standalone entry in the `fields` array.
+
+---
+
+## New Payload collections must be added to `generatePreviewPath` map
+**Date**: 2026-05-28
+**Symptom**: Admin live-preview URL is malformed (`undefined/slug`), causing broken preview behavior when creating a new collection.
+**Root cause**: `src/utilities/generatePreviewPath.ts` contains a `collectionPrefixMap` object. Collections not listed in this map return `undefined` as the path prefix.
+**Fix**: Add the new collection slug and its URL prefix to `collectionPrefixMap` (e.g., `projects: '/projects'`).
+
+---
+
 ## Logo hydration mismatch (`src` attribute)
 **Date**: 2026-05-27
 **Symptom**: React hydration error — `src` on the `Logo` img differed between server render (`/logo-black.svg`) and client hydration (`/logo-white.svg`).
