@@ -1,5 +1,6 @@
 import * as migration_20260409_155721_initial from './20260409_155721_initial';
 import * as migration_20260527_044348 from './20260527_044348';
+import * as migration_20260528_092154_add_solid_button_appearance from './20260528_092154_add_solid_button_appearance';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20260527_044348.up,
     down: migration_20260527_044348.down,
-    name: '20260527_044348'
+    name: '20260527_044348',
+  },
+  {
+    up: migration_20260528_092154_add_solid_button_appearance.up,
+    down: migration_20260528_092154_add_solid_button_appearance.down,
+    name: '20260528_092154_add_solid_button_appearance'
   },
 ];
