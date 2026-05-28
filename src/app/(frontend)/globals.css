@@ -48,6 +48,14 @@
 }
 
 @layer components {
+  .glass-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .neon-glow-pink:hover {
+    box-shadow: 0 0 20px rgba(255, 1, 251, 0.15);
+  }
+
   .btn-primary {
     position: relative;
     display: inline-flex;
