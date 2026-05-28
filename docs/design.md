@@ -52,7 +52,7 @@ Each block controls its own vertical rhythm. Use the spacing tokens from `tailwi
 Applied to content cards. Always use all three parts together:
 
 ```tsx
-<div className="glass-card border border-outline-variant/30 bg-surface-container-low neon-glow-pink group-hover:border-neon-pink transition-all duration-500 rounded-xl">
+<div className="glass-card border border-border/40 bg-card/80 neon-glow-pink group-hover:border-neon-pink transition-all duration-500 rounded-xl">
 ```
 
 | Part                              | Layer              | Effect                          |
@@ -103,7 +103,7 @@ Tokens are defined in `tailwind.config.mjs` under `theme.extend.fontFamily` and 
 | `text-on-surface` | `#e2e2e2` (dark-only) | No light mode equivalent |
 | `text-on-surface-variant` | `#dcbed3` (dark-only) | Too light on light background |
 
-**Exception:** `text-white` is acceptable *inside* Glass Cards, which maintain a dark surface (`bg-surface-container-low`) in both themes — making white text legible regardless of the page theme.
+**No exception for Glass Cards.** Glass Cards use `bg-card/80` (adaptive), which becomes near-white in Light Theme. Use `text-foreground` inside them.
 
 ---
 

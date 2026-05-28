@@ -78,7 +78,25 @@ Running log of issues encountered during development, with root cause and resolu
 ---
 
 
-## [short title]
+## `Cannot find field for path at _status` on static build
+
+**Date**: 2026-05-28
+**Symptom**: `Error occurred prerendering page "/projects"` — `Cannot find field for path at _status` during `next build`. The `/posts` listing page with an identical query pattern did not fail.
+**Root cause**: The `authenticatedOrPublished` access function returns `{ _status: { equals: 'published' } }` when no user is present. With `overrideAccess: false`, Payload applies this filter at query time. During static generation there is no authenticated user, so the filter is always applied. An interaction between the `select` clause and Payload's internal `_status` field resolution causes it to fail on the `projects` collection (exact root cause in Payload internals unclear — the `posts` page with the same pattern was unaffected, possibly due to no published posts existing in the DB at build time).
+**Fix**: Remove `overrideAccess: false` from the listing-page query. Access control is not meaningful for a fully public portfolio listing built statically. If draft filtering is needed, add an explicit `where: { _status: { equals: 'published' } }` alongside removing `overrideAccess` — but note this only works once the DB has the `_status` column (requires migrations to have run).
+
+---
+
+## `payload migrate` hangs indefinitely without a live DB connection
+
+**Date**: 2026-05-28
+**Symptom**: Running `npx payload migrate` from the CLI hangs with no output and never exits.
+**Root cause**: The migrate command tries to connect to the database before doing anything. If the DB is not reachable (e.g., not started, wrong env vars), it blocks waiting for the connection rather than failing fast.
+**Fix**: Ensure the database is running and `DATABASE_URI` in `.env` is correct before running migrations. Check with `npx payload migrate:status` first — if that also hangs, the DB is not reachable.
+
+---
+
+
 **Date**: YYYY-MM-DD
 **Symptom**: What went wrong / what error appeared
 **Root cause**: Why it happened

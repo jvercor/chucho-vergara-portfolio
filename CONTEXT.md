@@ -83,8 +83,12 @@ _Avoid_: CSS variables, Tailwind defaults
 **Glass Card**:
 A visual treatment applied to content cards using three co-operating classes: `glass-card` (backdrop-filter blur only), `border border-border/40 bg-card/80` (Tailwind border + semi-transparent background), and `neon-glow-pink` (hover box-shadow glow). Border color on hover is handled via Tailwind's `group-hover:border-neon-pink` on the card element. Always used together with `transition-all duration-500`.
 
-`bg-card/80` (not fully opaque) is intentional — it lets the `backdrop-filter: blur(12px)` show through: dark glass in Dark Theme, frosted white/lavender in Light Theme.
+`bg-card/80` (not fully opaque) is intentional — it lets the `backdrop-filter: blur(12px)` show through: dark glass in Dark Theme, frosted white/lavender in Light Theme. Text inside Glass Cards must use adaptive tokens (`text-foreground`, `text-muted-foreground`) — not `text-white`.
 _Avoid_: Frosted card, blur card
+
+**Narrative Card**:
+A rendered segment of a Project's rich-text body content. When a `content` field contains an `h2` heading node, that heading and its following paragraph nodes are wrapped in a Glass Card. Each `h2` opens a new Narrative Card. Non-heading and non-paragraph nodes (blocks, h3/h4, horizontal rules, leading paragraphs) render outside any card as passthrough content.
+_Avoid_: Section card, content card
 
 **Hero**:
 The full-screen section at the top of Home. Contains a centered content block (name h1, role subtitle, tagline, CTAs, availability badge) with atmospheric glow blobs and a scroll indicator. Uses adaptive CSS-var tokens so it renders correctly in both Dark and Light Theme.
