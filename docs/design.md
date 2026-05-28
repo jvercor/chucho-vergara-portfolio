@@ -84,7 +84,37 @@ Tokens are defined in `tailwind.config.mjs` under `theme.extend.fontFamily` and 
 
 ---
 
-## Color tokens
+## Buttons
+
+Two button variants. Both use `size="clear"` to disable Tailwind's size utilities and rely on their own padding.
+
+### Primary Button (`btn-primary`)
+
+```tsx
+<Button variant="primary" size="clear">Label</Button>
+```
+
+| State   | Effect                                                                 |
+|---------|------------------------------------------------------------------------|
+| Rest    | Transparent background, image-textured border (CSS mask trick)         |
+| Hover   | `brightness(1.15)` + `foreground` at 8% opacity as background fill     |
+| Focused | 2px `ring` outline, 4px offset                                         |
+
+**No scale on hover.** Scale was removed because it misaligns the image-textured border. Use brightness + fill to signal interactivity.
+
+### Hero Outline Button (`hero-outline`)
+
+```tsx
+<Button variant="hero-outline" size="clear">Label</Button>
+```
+
+| State   | Effect                                                                       |
+|---------|------------------------------------------------------------------------------|
+| Rest    | `border-outline-variant` border, transparent background, white text          |
+| Hover   | Fills with `bg-foreground`, text flips to `text-background`, border removed  |
+
+The fill-inversion pattern works across themes: in Dark Theme `bg-foreground` is `#e2e2e2` (near-white fill, dark text); in Light Theme it is `#120016` (near-black fill, light text).
+
 
 Use semantic tokens, not raw hex. All colors are defined in `tailwind.config.mjs`:
 

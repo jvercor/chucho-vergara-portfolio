@@ -97,11 +97,11 @@ _Avoid_: Bio card, intro card
 ### Buttons
 
 **Primary Button** (`btn-primary`):
-Image-textured border via CSS mask trick (`button.jpg`). Transparent background, Geist font, `1rem 2rem` padding. Available as `<Button variant="primary" size="clear">`. Hover: scale + brightness.
+Image-textured border via CSS mask trick (`button.jpg`). Transparent background, Geist font, `1rem 2rem` padding. Available as `<Button variant="primary" size="clear">`. Hover: subtle background fill (`foreground` at 8% opacity) + brightness lift. No scale effect.
 _Avoid_: Filled button, neon-pink background button
 
 **Hero Outline Button** (`hero-outline`):
-Secondary CTA used alongside the primary button. `border-outline-variant` border, transparent background, white text. Hover: border shifts to `neon-pink/50`. Available as `<Button variant="hero-outline" size="clear">`.
+Secondary CTA used alongside the primary button. `border-outline-variant` border, transparent background, white text. Hover: fills with `bg-foreground` and flips text to `text-background` (inverts correctly for both Dark and Light Theme); border becomes transparent. Available as `<Button variant="hero-outline" size="clear">`.
 _Avoid_: Ghost button, secondary button
 
 

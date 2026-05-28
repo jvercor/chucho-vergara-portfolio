@@ -17,7 +17,7 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         primary: 'btn-primary',
         'hero-outline':
-          'border border-outline-variant bg-transparent text-white font-bold rounded-lg hover:border-neon-pink/50 transition-all px-8 py-4',
+          'border border-outline-variant bg-transparent text-white font-bold rounded-lg hover:bg-foreground hover:text-background hover:border-transparent transition-all px-8 py-4',
       },
       size: {
         clear: '',
