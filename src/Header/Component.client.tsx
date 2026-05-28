@@ -31,7 +31,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       )}
     >
       <div className="container">
-        <div className="py-8 flex justify-between">
+        <div className="py-4 flex justify-between">
           <Link href="/">
             <Logo3D size={64} />
           </Link>
