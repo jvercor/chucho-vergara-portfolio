@@ -15,7 +15,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
    CREATE INDEX IF NOT EXISTS "folders_created_at_idx" ON "folders" USING btree ("created_at");
    ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "folders_id" integer;
    ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_folders_fk" FOREIGN KEY ("folders_id") REFERENCES "public"."folders"("id") ON DELETE cascade ON UPDATE no action;
-   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_folders_id_idx" ON "payload_locked_documents_rels" USING btree ("folders_id");`)
+   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_folders_id_idx" ON "payload_locked_documents_rels" USING btree ("folders_id");
+   ALTER TYPE "public"."enum_pages_hero_type" ADD VALUE IF NOT EXISTS 'homeHero';
+   ALTER TYPE "public"."enum__pages_v_version_hero_type" ADD VALUE IF NOT EXISTS 'homeHero';`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
