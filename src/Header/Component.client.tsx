@@ -1,8 +1,6 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 import type { Header } from '@/payload-types'
@@ -15,20 +13,7 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  const [theme, setTheme] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
-  const pathname = usePathname()
-
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -44,7 +29,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           ? 'bg-background/90 backdrop-blur-sm border-b border-border'
           : 'bg-transparent',
       )}
-      {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="container">
         <div className="py-8 flex justify-between">
