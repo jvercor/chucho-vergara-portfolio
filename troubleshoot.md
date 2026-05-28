@@ -131,12 +131,22 @@ CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_folders_id_idx" ON "pa
 ---
 
 
-## `Cannot find field for path at _status` on static build
+## `Cannot find field for path at _status` — `authenticatedOrPublished` on a collection without drafts
 
 **Date**: 2026-05-28
-**Symptom**: `Error occurred prerendering page "/projects"` — `Cannot find field for path at _status` during `next build`. The `/posts` listing page with an identical query pattern did not fail.
-**Root cause**: The `authenticatedOrPublished` access function returns `{ _status: { equals: 'published' } }` when no user is present. With `overrideAccess: false`, Payload applies this filter at query time. During static generation there is no authenticated user, so the filter is always applied. An interaction between the `select` clause and Payload's internal `_status` field resolution causes it to fail on the `projects` collection (exact root cause in Payload internals unclear — the `posts` page with the same pattern was unaffected, possibly due to no published posts existing in the DB at build time).
-**Fix**: Remove `overrideAccess: false` from the listing-page query. Access control is not meaningful for a fully public portfolio listing built statically. If draft filtering is needed, add an explicit `where: { _status: { equals: 'published' } }` alongside removing `overrideAccess` — but note this only works once the DB has the `_status` column (requires migrations to have run).
+**Symptom**: `Cannot find field for path at _status` — either during `next build` (prerender error) or at runtime (500 on a page that fetches related data with `depth ≥ 1`).
+**Root cause**: `authenticatedOrPublished` returns `{ _status: { equals: 'published' } }` when no authenticated user is present. Payload applies this as a DB filter, but `_status` only exists on collections with `versions: { drafts: true }`. Any collection using `authenticatedOrPublished` **without** drafts enabled will fail as soon as an unauthenticated request triggers the access function.
+
+This also affects **related collections fetched at depth**: if Collection A has drafts and Collection B does not, a query on A with `depth: 1` and `overrideAccess: false` will also run the access function on B's rows — causing the same error.
+
+**Known occurrences on this project**:
+- `/projects` listing page (static build) — `projects` collection query used `overrideAccess: false`. Fixed by removing `overrideAccess: false` from that query.
+- `/projects/[slug]` at runtime — `queryProjectBySlug` fetches with `depth: 1`, populating related `stack` items. `Stack` collection used `authenticatedOrPublished` but has no drafts/`_status` column. Fixed by changing `Stack.read` to `() => true`.
+
+**Fix (general)**:
+- If the collection has no drafts: use `() => true` for read access instead of `authenticatedOrPublished`.
+- If the collection has drafts but the query is public/static: remove `overrideAccess: false` and add an explicit `where: { _status: { equals: 'published' } }` if filtering is needed.
+- Rule of thumb: only use `authenticatedOrPublished` on collections that have `versions: { drafts: true }`.
 
 ---
 
