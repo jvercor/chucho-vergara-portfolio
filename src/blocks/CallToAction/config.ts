@@ -28,6 +28,12 @@ export const CallToAction: Block = {
       }),
       label: false,
     },
+    {
+      name: 'backgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
     linkGroup({
       appearances: ['default', 'outline'],
       overrides: {
