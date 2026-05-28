@@ -4,6 +4,52 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## Admin panel 500 — `folders_id` column missing from `payload_locked_documents_rels`
+**Date**: 2026-05-28
+**Symptom**: `/admin` returns 500 for every request. Vercel runtime logs show:
+```
+Error: Failed query — column payload_locked_documents__rels.folders_id does not exist
+```
+**Root cause**: Migration `20260527_044348` had a no-op `up()` ("Schema already applied via dev-mode push"), relying on a dev DB push that was subsequently lost. The migration was already recorded in `payload_migrations` as applied (batch 2), so Payload never re-ran it. The `folders` table and `folders_id` column it was supposed to create never actually existed in the live DB. The Payload config defines a custom `folders` collection (`folders: true`), which causes Payload to reference `folders_id` in every `payload_locked_documents_rels` query — including the one that bootstraps the admin panel.
+
+**Fix**:
+1. Run the following SQL directly on the live DB:
+```sql
+CREATE TABLE IF NOT EXISTS "folders" (
+  "id" serial PRIMARY KEY NOT NULL,
+  "name" varchar NOT NULL,
+  "folder_id" integer,
+  "updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  "created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+);
+ALTER TABLE "folders" ADD CONSTRAINT "folders_folder_id_payload_folders_id_fk"
+  FOREIGN KEY ("folder_id") REFERENCES "public"."payload_folders"("id") ON DELETE set null ON UPDATE no action;
+CREATE INDEX IF NOT EXISTS "folders_folder_idx" ON "folders" USING btree ("folder_id");
+CREATE INDEX IF NOT EXISTS "folders_updated_at_idx" ON "folders" USING btree ("updated_at");
+CREATE INDEX IF NOT EXISTS "folders_created_at_idx" ON "folders" USING btree ("created_at");
+ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "folders_id" integer;
+ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_folders_fk"
+  FOREIGN KEY ("folders_id") REFERENCES "public"."folders"("id") ON DELETE cascade ON UPDATE no action;
+CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_folders_id_idx" ON "payload_locked_documents_rels" USING btree ("folders_id");
+```
+2. Migration `src/migrations/20260527_044348.ts` `up()` was updated with the same SQL (with `IF NOT EXISTS` guards) so future fresh installs apply it correctly.
+
+**Key lesson**: Never write a no-op `up()` unless you are certain the dev-push state is permanent and will never be lost. If the DB is reset or re-provisioned, the migration record will block the schema from ever being re-applied.
+
+---
+
+## `solid` enum value missing from link appearance types
+**Date**: 2026-05-28
+**Symptom**: Saving any content with a `solid` button appearance fails at the DB level (Payload does not surface a clear error in the admin UI, but the save silently fails or returns an error).
+**Root cause**: Migration `20260528_092154_add_solid_button_appearance` was misnamed — its `up()` only contained unrelated `projects`/`stack`/`search` schema changes, not the 6 `ALTER TYPE … ADD VALUE 'solid'` statements needed to add `solid` to the link appearance enums. The `solid` appearance was present in application code (`src/fields/link.ts`, CTA/content block configs) but missing from the 6 DB enum types (`enum_pages_hero_links_link_appearance`, `enum__pages_v_version_hero_links_link_appearance`, `enum_pages_blocks_cta_links_link_appearance`, `enum__pages_v_blocks_cta_links_link_appearance`, `enum_pages_blocks_content_columns_link_appearance`, `enum__pages_v_blocks_content_columns_link_appearance`).
+**Fix**:
+1. Applied `ALTER TYPE … ADD VALUE IF NOT EXISTS 'solid'` for all 6 enums directly on the live DB.
+2. Migration file `src/migrations/20260528_092154_add_solid_button_appearance.ts` updated to include the 6 `ALTER TYPE` statements so future fresh installs have the correct enum values.
+
+**Note**: This bug did **not** cause the admin panel 500 (that was the `folders_id` issue above). It would only manifest when a user tried to save content with `solid` appearance.
+
+---
+
 ## `slugField()` must not be spread in Payload v3 collections
 **Date**: 2026-05-28
 **Symptom**: Runtime error — "slugField is not a function or its return value is not iterable" when opening a collection entry in the admin panel.
