@@ -10,6 +10,10 @@ A personal portfolio site for Jesus "Chucho" Vergara, Sr. Full Stack Engineer. S
 The landing page. Contains a hero with a Three.js 3D scene and an identity card. Surfaces Projects, including a Featured Projects block.
 _Avoid_: Index, landing page
 
+**Projects Page**:
+A fixed hardcoded route at `/projects`. Layout: short text hero (h1 + tagline), a bento grid of the two most-recently-launched published Projects (large 8-col + small 4-col), then all remaining published Projects in a 3-per-row small-card grid. Projects are sorted by Launch Date descending. Card components are shared via `src/components/ProjectCards`.
+_Avoid_: Project list, project archive, all projects
+
 **Featured Projects**:
 A Payload CMS block that lets an editor hand-pick exactly two Projects to highlight. Renders as a bento grid: first Project large (8-col, aspect-video), second Project small (4-col, aspect-square). Displays the Project's cover image, title, short description, and up to 3 Stack tags. The large card additionally shows a `git clone` row when `repoUrl` is set. The block includes a CMS-editable subtitle and a "View All Projects" link to `/projects`. Usable on any Page via the layout field.
 _Avoid_: Featured works, pinned projects, highlighted projects
