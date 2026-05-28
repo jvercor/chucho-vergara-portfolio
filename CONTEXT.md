@@ -51,25 +51,29 @@ _Avoid_: Programming language, tongue
 ### Theme
 
 **Dark Theme**:
-The default color palette — black background, `stone-200/300` text, `white/10` borders, subtle purple radial gradient accent. Matches the reference design.
+The default color palette. Background `#0a0a0a` (surface-black), text `#e2e2e2` (on-surface), accent `#ff01fb` (neon-pink), muted text `#dcbed3` (on-surface-variant). Defined via a design system token set — see ADR 0003.
 _Avoid_: Night mode, dark mode (use Dark Theme)
 
 **Light Theme**:
 The alternative palette, toggled by the user via a sun/moon icon in the Nav. Same layout, inverted colors.
 _Avoid_: Day mode, white theme
 
+**Design System Tokens**:
+Color, typography, and spacing tokens sourced from the `hyper_violet_engineering` template (local, gitignored). Tokens live in `tailwind.config.mjs` under `theme.extend` — colors, fontFamily, fontSize (compound values), and spacing. Font is Geist (not the template's Inter). See ADR 0003 for the full token map and architecture decisions.
+_Avoid_: CSS variables, Tailwind defaults
+
 ### Visual / interaction
 
 **Hero**:
-The full-screen section at the top of Home, containing the Three.js 3D scene and the identity card.
+The full-screen section at the top of Home. Contains a centered content block (name h1, role h2 with decorative lines, tagline, CTAs) layered above the 3D scene. Background has two atmospheric glow blobs (desktop only). A scroll indicator sits at the absolute bottom. The content block is offset downward with `mt-24 md:mt-44` to give the 3D model visual breathing room in the upper viewport.
 _Avoid_: Banner, splash
 
 **3D Scene**:
-The interactive Three.js scene rendered behind the identity card on the Home hero. The model auto-rotates slowly (idle rotation) and tilts toward the cursor (mouse-tracking). Replaces the earlier Spline implementation. Model served from `/public/3d/logo.glb`.
+The interactive Three.js scene rendered behind the Hero content block. The model is a matcap-shaded GLB, normalized to scale `1.38`. It tilts toward the cursor (mouse-tracking via lerp) and has no idle auto-rotation. Model served from `/public/model.glb`, matcap texture from `/public/matcap.png`.
 _Avoid_: Spline scene, 3D model viewer
 
 **Identity Card**:
-The frosted-glass card pinned to the bottom of the Hero showing the owner's name, title, and social links.
+Removed. Previously a frosted-glass card pinned to the bottom of the Hero. Replaced by the centered Hero content block.
 _Avoid_: Bio card, intro card
 
 ## Conventions
