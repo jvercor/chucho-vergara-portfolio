@@ -166,7 +166,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_pages_v_blocks_cta_background_image_idx" ON "_pages_v_blocks_cta" USING btree ("background_image_id");
   CREATE INDEX "payload_locked_documents_rels_projects_id_idx" ON "payload_locked_documents_rels" USING btree ("projects_id");
   CREATE INDEX "payload_locked_documents_rels_stack_id_idx" ON "payload_locked_documents_rels" USING btree ("stack_id");
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "search_id";`)
+  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "search_id";
+  ALTER TYPE "public"."enum_pages_blocks_cta_links_link_appearance" ADD VALUE IF NOT EXISTS 'solid';
+  ALTER TYPE "public"."enum__pages_v_blocks_cta_links_link_appearance" ADD VALUE IF NOT EXISTS 'solid';
+  ALTER TYPE "public"."enum_pages_blocks_content_columns_link_appearance" ADD VALUE IF NOT EXISTS 'solid';
+  ALTER TYPE "public"."enum__pages_v_blocks_content_columns_link_appearance" ADD VALUE IF NOT EXISTS 'solid';
+  ALTER TYPE "public"."enum_pages_hero_links_link_appearance" ADD VALUE IF NOT EXISTS 'solid';
+  ALTER TYPE "public"."enum__pages_v_version_hero_links_link_appearance" ADD VALUE IF NOT EXISTS 'solid';`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
