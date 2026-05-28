@@ -109,7 +109,7 @@ Tokens are defined in `tailwind.config.mjs` under `theme.extend.fontFamily` and 
 
 ## Buttons
 
-Two button variants. Both use `size="clear"` to disable Tailwind's size utilities and rely on their own padding.
+Three button variants. All use `size="clear"` to disable Tailwind's size utilities and rely on their own padding.
 
 ### Primary Button (`btn-primary`)
 
@@ -120,10 +120,10 @@ Two button variants. Both use `size="clear"` to disable Tailwind's size utilitie
 | State   | Effect                                                                 |
 |---------|------------------------------------------------------------------------|
 | Rest    | Transparent background, image-textured border (CSS mask trick)         |
-| Hover   | `brightness(1.15)` + `foreground` at 8% opacity as background fill     |
+| Hover   | `scale(1.05)` + `brightness(1.15)`. No background fill.                |
 | Focused | 2px `ring` outline, 4px offset                                         |
 
-**No scale on hover.** Scale was removed because it misaligns the image-textured border. Use brightness + fill to signal interactivity.
+Scale is intentional here — the image-textured border scales with the element, which is fine.
 
 ### Hero Outline Button (`hero-outline`)
 
@@ -133,11 +133,32 @@ Two button variants. Both use `size="clear"` to disable Tailwind's size utilitie
 
 | State   | Effect                                                                       |
 |---------|------------------------------------------------------------------------------|
-| Rest    | `border-outline-variant` border, transparent background, white text          |
+| Rest    | `border-border` border, transparent background, `text-foreground` text       |
 | Hover   | Fills with `bg-foreground`, text flips to `text-background`, border removed  |
 
-The fill-inversion pattern works across themes: in Dark Theme `bg-foreground` is `#e2e2e2` (near-white fill, dark text); in Light Theme it is `#120016` (near-black fill, light text).
+Fill-inversion adapts to theme: in Dark Theme `bg-foreground` is `#e2e2e2` (near-white fill, dark text); in Light Theme it is `#120016` (near-black fill, light text).
 
+### Solid Button (`btn-solid`)
+
+```tsx
+<Button variant="solid" size="clear">Label</Button>
+```
+
+| State   | Effect                                             |
+|---------|----------------------------------------------------|
+| Rest    | `bg-white text-black` — theme-independent          |
+| Hover   | `scale(1.05)` + `brightness(1.05)`                 |
+| Focused | 2px `ring` outline, 4px offset                     |
+
+Always literal white regardless of theme. Use as a high-contrast CTA where neither the textured-border nor the outline treatment fits. Also available in Payload CMS link fields as appearance `"solid"` (maps to this variant in all CTA blocks).
+
+### CMS appearance → variant mapping
+
+| CMS `appearance` | Button variant |
+|---|---|
+| `default` | `primary` |
+| `outline` | `hero-outline` |
+| `solid` | `solid` |
 
 Use semantic tokens, not raw hex. All colors are defined in `tailwind.config.mjs`:
 

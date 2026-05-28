@@ -32,7 +32,11 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText, ba
             <div className="flex flex-wrap justify-center gap-4">
               {(links || []).map(({ link }, i) => {
                 const appearance =
-                  link.appearance === 'outline' ? 'hero-outline' : 'primary'
+                  link.appearance === 'outline'
+                    ? 'hero-outline'
+                    : link.appearance === 'solid'
+                      ? 'solid'
+                      : 'primary'
                 return <CMSLink key={i} size="clear" {...link} appearance={appearance} />
               })}
             </div>

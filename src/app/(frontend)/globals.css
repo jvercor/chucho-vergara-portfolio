@@ -70,7 +70,7 @@
     background-color: transparent;
     color: var(--foreground);
     border-radius: 0.5rem;
-    transition: background-color 0.25s ease, filter 0.25s ease;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.25s ease;
     white-space: nowrap;
   }
   /* Image border via mask trick — compatible with border-radius */
@@ -92,14 +92,44 @@
     pointer-events: none;
   }
   .btn-primary:hover {
+    transform: scale(1.05);
     filter: brightness(1.15);
-    background-color: color-mix(in srgb, var(--foreground) 8%, transparent);
   }
   .btn-primary:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 4px;
   }
   .btn-primary:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .btn-solid {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 0.5rem;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.25s ease;
+    white-space: nowrap;
+  }
+  .btn-solid:hover {
+    transform: scale(1.05);
+    filter: brightness(1.05);
+  }
+  .btn-solid:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+  .btn-solid:disabled {
     pointer-events: none;
     opacity: 0.5;
   }

@@ -101,12 +101,16 @@ _Avoid_: Bio card, intro card
 ### Buttons
 
 **Primary Button** (`btn-primary`):
-Image-textured border via CSS mask trick (`button.jpg`). Transparent background, Geist font, `1rem 2rem` padding. Available as `<Button variant="primary" size="clear">`. Hover: subtle background fill (`foreground` at 8% opacity) + brightness lift. No scale effect.
+Image-textured border via CSS mask trick (`button.jpg`). Transparent background, Geist font, `1rem 2rem` padding. Available as `<Button variant="primary" size="clear">`. Hover: `scale(1.05)` + `brightness(1.15)`. No background fill on hover.
 _Avoid_: Filled button, neon-pink background button
 
 **Hero Outline Button** (`hero-outline`):
-Secondary CTA used alongside the primary button. `border-border` border, transparent background, `text-foreground` text — adapts to both themes. Hover: fills with `bg-foreground`, flips text to `text-background`, border becomes transparent. Available as `<Button variant="hero-outline" size="clear">`.
+Secondary CTA. `border-border` border, transparent background, `text-foreground` text. Hover: fills with `bg-foreground`, flips text to `text-background`, border becomes transparent. Inverts correctly in both themes. Available as `<Button variant="hero-outline" size="clear">`.
 _Avoid_: Ghost button, secondary button
+
+**Solid Button** (`btn-solid`):
+Always-white filled CTA. `bg-white text-black`, theme-independent. Available as `<Button variant="solid" size="clear">`. Hover: `scale(1.05)` + `brightness(1.05)`. Also selectable in Payload CMS link fields as appearance `"solid"`.
+_Avoid_: Filled button, white button
 
 
 
