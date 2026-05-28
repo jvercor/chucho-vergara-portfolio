@@ -17,7 +17,7 @@ export const HomeHero: React.FC = () => {
             Available for new opportunities
           </span>
         </div>
-        <div className="font-headline-sm text-xl uppercase tracking-widest text-tertiary-fixed-dim mb-4">
+        <div className="font-headline-sm text-xl tracking-widest text-tertiary-fixed-dim mb-4">
           Sr. Full-stack Engineer
         </div>
         {/* Headline */}
@@ -33,12 +33,12 @@ export const HomeHero: React.FC = () => {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Button variant="primary" size="lg" asChild>
+          <Button variant="primary" size="clear" asChild>
             <a href="/work">View Projects</a>
           </Button>
-          <button className="px-8 py-4 bg-transparent border border-outline-variant text-white font-bold rounded-lg hover:border-neon-pink/50 transition-all">
-            Get in touch
-          </button>
+          <Button variant="hero-outline" size="clear" asChild>
+            <a href="/contact">Get in touch</a>
+          </Button>
         </div>
       </div>
 

@@ -16,6 +16,8 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         primary: 'btn-primary',
+        'hero-outline':
+          'border border-outline-variant bg-transparent text-white font-bold rounded-lg hover:border-neon-pink/50 transition-all px-8 py-4',
       },
       size: {
         clear: '',

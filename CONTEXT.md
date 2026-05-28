@@ -76,7 +76,17 @@ _Avoid_: Spline scene, 3D model viewer
 Removed. Previously a frosted-glass card pinned to the bottom of the Hero. Replaced by the centered Hero content block.
 _Avoid_: Bio card, intro card
 
-## Conventions
+### Buttons
+
+**Primary Button** (`btn-primary`):
+Image-textured border via CSS mask trick (`button.jpg`). Transparent background, Geist font, `1rem 2rem` padding. Available as `<Button variant="primary" size="clear">`. Hover: scale + brightness.
+_Avoid_: Filled button, neon-pink background button
+
+**Hero Outline Button** (`hero-outline`):
+Secondary CTA used alongside the primary button. `border-outline-variant` border, transparent background, white text. Hover: border shifts to `neon-pink/50`. Available as `<Button variant="hero-outline" size="clear">`.
+_Avoid_: Ghost button, secondary button
+
+
 
 **Commit messages**: Short one-liners only. No co-authored-by trailers.
 
