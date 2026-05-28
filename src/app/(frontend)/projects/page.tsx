@@ -5,17 +5,24 @@ import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 
+import { LargeCard, SmallCard } from '@/components/ProjectCards'
+
 export const dynamic = 'force-static'
 export const revalidate = 600
 
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
-  const projects = await payload.find({
+  const { docs: projects } = await payload.find({
     collection: 'projects',
     depth: 1,
+    draft: false,
     limit: 100,
+    overrideAccess: true,
     sort: '-launchDate',
+    where: {
+      _status: { equals: 'published' },
+    },
     select: {
       title: true,
       slug: true,
@@ -23,41 +30,54 @@ export default async function Page() {
       coverImage: true,
       launchDate: true,
       stack: true,
+      repoUrl: true,
       clientLocation: true,
+      updatedAt: true,
+      createdAt: true,
       meta: true,
     },
   })
 
-  return (
-    <div className="pt-24 pb-24">
-      <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Projects</h1>
-        </div>
-      </div>
+  const [featured, spotlight, ...rest] = projects
 
-      <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.docs.map((project) => (
-            <a key={project.id} href={`/projects/${project.slug}`} className="block group">
-              <article className="border border-border rounded-lg overflow-hidden">
-                <div className="p-6">
-                  <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h2>
-                  {project.shortDescription && (
-                    <p className="text-on-surface-variant text-sm mb-4">{project.shortDescription}</p>
-                  )}
-                  {project.clientLocation && (
-                    <p className="text-xs text-on-surface-variant">{project.clientLocation}</p>
-                  )}
-                </div>
-              </article>
-            </a>
-          ))}
-        </div>
-      </div>
+  return (
+    <div className="pb-24">
+      <PageClient />
+
+      {/* Hero */}
+      <section className="container py-section-gap">
+        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground mb-6">
+          Featured <span className="text-neon-pink">Engineering</span> Projects
+        </h1>
+        <p className="font-body-lg text-body-lg text-muted-foreground">
+          A curated selection of performance-critical applications, developer tools, and
+          architectural experiments built with precision and modern stack.
+        </p>
+      </section>
+
+      {/* Bento — top two projects */}
+      {featured && (
+        <section className="container mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <LargeCard
+              project={featured}
+              colClass={spotlight ? 'md:col-span-8' : 'md:col-span-12'}
+            />
+            {spotlight && <SmallCard project={spotlight} />}
+          </div>
+        </section>
+      )}
+
+      {/* All remaining projects — 3-per-row */}
+      {rest.length > 0 && (
+        <section className="container mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {rest.map((project) => (
+              <SmallCard key={project.id} project={project} colClass="" />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }
