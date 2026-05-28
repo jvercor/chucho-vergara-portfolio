@@ -62,7 +62,7 @@ export const HomeHero: React.FC = () => {
       const center = box.getCenter(new THREE.Vector3())
       const size = box.getSize(new THREE.Vector3())
       const maxDim = Math.max(size.x, size.y, size.z)
-      const scale = 1.45 / maxDim
+      const scale = 1.14 / maxDim
       model.scale.setScalar(scale)
       model.position.sub(center.multiplyScalar(scale))
       model.position.y += window.innerWidth < 768 ? 0.35 : 0.71
@@ -133,7 +133,7 @@ export const HomeHero: React.FC = () => {
       </div>
 
       {/* Layer 2 – Hero content, vertically centered */}
-      <div className="max-w-4xl space-y-8 z-10 mt-16 md:mt-32">
+      <div className="max-w-4xl space-y-8 z-10 mt-24 md:mt-44">
         {/* Headline */}
         <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white">
           Jesus Vergara Cortes
