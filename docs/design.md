@@ -124,3 +124,41 @@ Use semantic tokens, not raw hex. All colors are defined in `tailwind.config.mjs
 - **Accent:** `text-neon-pink`, `bg-neon-pink/10`
 
 `var(--neon-pink)` is a real CSS custom property. Most other tokens are static hex in Tailwind config — do **not** use `var(--surface-container)` etc. in CSS.
+
+---
+
+## Theme & Color Strategy
+
+This is the most common source of confusion. Read this before writing any styles.
+
+### Two token systems
+
+| System | Examples | Defined in | Adapts to theme? |
+|---|---|---|---|
+| **Semantic / adaptive** | `text-foreground`, `bg-background`, `text-muted-foreground`, `border-border`, `text-primary`, `bg-card` | `[data-theme='dark']` + `[data-theme='light']` blocks in `globals.css`, mapped via `@theme inline` | ✅ Yes |
+| **Static DESIGN.md tokens** | `text-on-surface-variant`, `text-on-surface`, `border-outline-variant`, `bg-surface-container-low`, `text-white` | Hardcoded dark hex values in `tailwind.config.mjs` under `theme.extend` | ❌ No — always render as dark-palette values |
+
+**Rule: use adaptive tokens by default.** Only reach for static tokens when you are certain the component is intentionally always dark.
+
+### Adaptive token quick reference
+
+| You need… | Use… | Not… |
+|---|---|---|
+| Body text | `text-foreground` | `text-white`, `text-on-surface` |
+| Muted / secondary text | `text-muted-foreground` | `text-on-surface-variant` |
+| Primary accent | `text-primary` / `bg-primary` | static hex |
+| Subtle border | `border-border` | `border-outline-variant` |
+| Card surface | `bg-card` | `bg-surface-container` |
+| Neon pink (same both themes) | `text-neon-pink` / `bg-neon-pink` | ✅ safe either way |
+
+### The `dark:` prefix
+
+`@custom-variant dark` is defined as `(&:is([data-theme='dark'] *))`. Use it to provide dark overrides on otherwise adaptive components:
+
+```tsx
+<div className="bg-white dark:bg-card text-foreground">
+```
+
+### Static tokens are not wrong — use them knowingly
+
+Static tokens (`text-on-surface-variant`, etc.) are valid when a component is intentionally dark-only by design. Document that intent with a comment so future agents don't "fix" it:

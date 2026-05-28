@@ -83,11 +83,13 @@ _Avoid_: CSS variables, Tailwind defaults
 **Glass Card**:
 A visual treatment applied to content cards using three co-operating classes: `glass-card` (backdrop-filter blur only), `border border-outline-variant/30 bg-surface-container-low` (Tailwind border + background), and `neon-glow-pink` (hover box-shadow glow). Border color on hover is handled via Tailwind's `group-hover:border-neon-pink` on the card element. Always used together with `transition-all duration-500`.
 _Avoid_: Frosted card, blur card
-The full-screen section at the top of Home. Contains a centered content block (name h1, role h2 with decorative lines, tagline, CTAs) layered above the 3D scene. Background has two atmospheric glow blobs (desktop only). A scroll indicator sits at the absolute bottom. The content block is offset downward with `mt-24 md:mt-44` to give the 3D model visual breathing room in the upper viewport.
+
+**Hero**:
+The full-screen section at the top of Home. Contains a centered content block (name h1, role subtitle, tagline, CTAs, availability badge) with atmospheric glow blobs and a scroll indicator. Uses adaptive CSS-var tokens so it renders correctly in both Dark and Light Theme.
 _Avoid_: Banner, splash
 
 **3D Scene**:
-The interactive Three.js scene rendered behind the Hero content block. The model is a matcap-shaded GLB, normalized to scale `1.38`. It tilts toward the cursor (mouse-tracking via lerp) and has no idle auto-rotation. Model served from `/public/model.glb`, matcap texture from `/public/matcap.png`.
+Removed from the Hero. Previously a Three.js matcap-shaded GLB with mouse-tracking. May be reintroduced in a future section.
 _Avoid_: Spline scene, 3D model viewer
 
 **Identity Card**:
@@ -101,7 +103,7 @@ Image-textured border via CSS mask trick (`button.jpg`). Transparent background,
 _Avoid_: Filled button, neon-pink background button
 
 **Hero Outline Button** (`hero-outline`):
-Secondary CTA used alongside the primary button. `border-outline-variant` border, transparent background, white text. Hover: fills with `bg-foreground` and flips text to `text-background` (inverts correctly for both Dark and Light Theme); border becomes transparent. Available as `<Button variant="hero-outline" size="clear">`.
+Secondary CTA used alongside the primary button. `border-border` border, transparent background, `text-foreground` text — adapts to both themes. Hover: fills with `bg-foreground`, flips text to `text-background`, border becomes transparent. Available as `<Button variant="hero-outline" size="clear">`.
 _Avoid_: Ghost button, secondary button
 
 

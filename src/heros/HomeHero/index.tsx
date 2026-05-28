@@ -17,16 +17,16 @@ export const HomeHero: React.FC = () => {
             Available for new opportunities
           </span>
         </div>
-        <div className="font-headline-sm text-xl tracking-widest text-tertiary-fixed-dim mb-4">
+        <div className="font-headline-sm text-xl tracking-widest text-muted-foreground mb-4">
           Sr. Full-stack Engineer
         </div>
         {/* Headline */}
-        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white tracking-tight">
+        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground tracking-tight">
           Jesus <span className="text-neon-pink">Vergara Cortes.</span>
         </h1>
 
         {/* Tagline */}
-        <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+        <p className="font-body-lg text-body-lg text-muted-foreground max-w-2xl mx-auto">
           I build web systems that reduce friction and drive real results — turning complex problems
           into software that helps people work smarter and make better decisions.
         </p>
@@ -47,7 +47,7 @@ export const HomeHero: React.FC = () => {
         className="absolute bottom-12 flex flex-col items-center gap-2 opacity-40"
         aria-hidden="true"
       >
-        <span className="font-label-caps text-label-caps uppercase text-on-surface">Scroll</span>
+        <span className="font-label-caps text-label-caps uppercase text-foreground">Scroll</span>
         <div className="w-px h-12 bg-gradient-to-b from-neon-pink to-transparent" />
       </div>
     </section>
