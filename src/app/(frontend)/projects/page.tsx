@@ -15,7 +15,6 @@ export default async function Page() {
     collection: 'projects',
     depth: 1,
     limit: 100,
-    overrideAccess: false,
     sort: '-launchDate',
     select: {
       title: true,
