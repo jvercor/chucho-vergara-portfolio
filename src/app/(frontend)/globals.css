@@ -98,6 +98,14 @@
 }
 
 @layer utilities {
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(255, 1, 251, 0.15);
+  }
+
+  .px-gutter {
+    padding-inline: 16px;
+  }
+
   .container {
     width: 100%;
     margin-inline: auto;
