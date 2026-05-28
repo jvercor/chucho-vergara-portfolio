@@ -38,15 +38,22 @@ CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_folders_id_idx" ON "pa
 
 ---
 
-## `solid` enum value missing from link appearance types
+## Enum value added to code but missing from DB — saves fail silently
 **Date**: 2026-05-28
-**Symptom**: Saving any content with a `solid` button appearance fails at the DB level (Payload does not surface a clear error in the admin UI, but the save silently fails or returns an error).
-**Root cause**: Migration `20260528_092154_add_solid_button_appearance` was misnamed — its `up()` only contained unrelated `projects`/`stack`/`search` schema changes, not the 6 `ALTER TYPE … ADD VALUE 'solid'` statements needed to add `solid` to the link appearance enums. The `solid` appearance was present in application code (`src/fields/link.ts`, CTA/content block configs) but missing from the 6 DB enum types (`enum_pages_hero_links_link_appearance`, `enum__pages_v_version_hero_links_link_appearance`, `enum_pages_blocks_cta_links_link_appearance`, `enum__pages_v_blocks_cta_links_link_appearance`, `enum_pages_blocks_content_columns_link_appearance`, `enum__pages_v_blocks_content_columns_link_appearance`).
-**Fix**:
-1. Applied `ALTER TYPE … ADD VALUE IF NOT EXISTS 'solid'` for all 6 enums directly on the live DB.
-2. Migration file `src/migrations/20260528_092154_add_solid_button_appearance.ts` updated to include the 6 `ALTER TYPE` statements so future fresh installs have the correct enum values.
+**Symptom**: Saving content that uses a new enum option fails. Vercel logs show `invalid input value for enum <enum_name>: "<value>"`. The admin UI shows a notification error or silently fails to save.
+**Root cause**: A new option was added to a `select` field in code (or `payload-types.ts` was regenerated) but the corresponding `ALTER TYPE … ADD VALUE` statement was never added to a migration. The DB enum still only knows about the old values.
 
-**Note**: This bug did **not** cause the admin panel 500 (that was the `folders_id` issue above). It would only manifest when a user tried to save content with `solid` appearance.
+**Known occurrences on this project**:
+- `solid` on 6 link appearance enums — migration `20260528_092154_add_solid_button_appearance` was misnamed and its `up()` only contained unrelated schema changes. Fixed by applying `ALTER TYPE … ADD VALUE IF NOT EXISTS 'solid'` on all 6 enums and updating the migration file.
+- `homeHero` on `enum_pages_hero_type` and `enum__pages_v_version_hero_type` — added to `src/heros/config.ts` but missing from the `up()` of migration `20260527_044348` (despite the `down()` correctly rolling it back). Fixed by applying `ALTER TYPE … ADD VALUE IF NOT EXISTS 'homeHero'` on both enums and updating the migration file.
+
+**Fix (general pattern)**:
+1. Run `ALTER TYPE "public"."<enum_name>" ADD VALUE IF NOT EXISTS '<new_value>';` on the live DB for each affected enum.
+2. Add the same statement to the relevant migration's `up()` so fresh installs stay in sync.
+
+**How to find affected enums**: search `payload-types.ts` for the field type — the union of string literals is the source of truth for what values should exist in the DB enum.
+
+**Note**: The `solid` bug did **not** cause the admin panel 500 (that was the `folders_id` issue above).
 
 ---
 
