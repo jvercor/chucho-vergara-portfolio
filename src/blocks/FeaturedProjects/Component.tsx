@@ -32,9 +32,9 @@ export const FeaturedProjectsBlock: React.FC<FeaturedProjectsBlockProps> = async
       {/* Header row */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
         <div className="space-y-4">
-          <h2 className="font-headline-md text-headline-md text-white">Featured Projects</h2>
+          <h2 className="font-headline-md text-headline-md text-foreground">Featured Projects</h2>
           {subtitle && (
-            <p className="font-body-md text-body-md text-on-surface-variant max-w-lg">{subtitle}</p>
+            <p className="font-body-md text-body-md text-muted-foreground max-w-lg">{subtitle}</p>
           )}
         </div>
         <a
@@ -80,9 +80,9 @@ const LargeCard: React.FC<{ project: Project }> = ({ project }) => {
 
   return (
     <div className="md:col-span-8 group">
-      <a href={`/projects/${slug}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full border border-outline-variant/30 bg-surface-container-low neon-glow-pink group-hover:border-neon-pink transition-all duration-500">
+      <a href={`/projects/${slug}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full border border-border/40 bg-card/80 neon-glow-pink group-hover:border-neon-pink transition-all duration-500">
         {coverImage && typeof coverImage === 'object' && (
-          <div className="aspect-video w-full overflow-hidden bg-surface-container relative">
+          <div className="aspect-video w-full overflow-hidden bg-muted relative">
             <Media
               resource={coverImage}
               fill
@@ -92,14 +92,14 @@ const LargeCard: React.FC<{ project: Project }> = ({ project }) => {
         )}
         <div className="p-8 space-y-4 flex-grow">
           <StackTags stack={stack} />
-          <h3 className="font-headline-sm text-headline-sm text-white">{title}</h3>
+          <h3 className="font-headline-sm text-headline-sm text-card-foreground">{title}</h3>
           {shortDescription && (
-            <p className="font-body-md text-body-md text-on-surface-variant">{shortDescription}</p>
+            <p className="font-body-md text-body-md text-muted-foreground">{shortDescription}</p>
           )}
           {repoUrl && (
             <div className="pt-4 flex items-center gap-4">
               <span className="material-symbols-outlined text-neon-pink text-base">terminal</span>
-              <span className="font-mono-code text-mono-code text-on-surface-variant">
+              <span className="font-mono-code text-mono-code text-muted-foreground">
                 git clone {repoUrl}
               </span>
             </div>
@@ -115,9 +115,9 @@ const SmallCard: React.FC<{ project: Project }> = ({ project }) => {
 
   return (
     <div className="md:col-span-4 group">
-      <a href={`/projects/${slug}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full border border-outline-variant/30 bg-surface-container-low neon-glow-pink group-hover:border-neon-pink transition-all duration-500">
+      <a href={`/projects/${slug}`} className="glass-card rounded-xl overflow-hidden flex flex-col h-full border border-border/40 bg-card/80 neon-glow-pink group-hover:border-neon-pink transition-all duration-500">
         {coverImage && typeof coverImage === 'object' && (
-          <div className="aspect-square w-full overflow-hidden bg-surface-container relative">
+          <div className="aspect-square w-full overflow-hidden bg-muted relative">
             <Media
               resource={coverImage}
               fill
@@ -127,9 +127,9 @@ const SmallCard: React.FC<{ project: Project }> = ({ project }) => {
         )}
         <div className="p-8 space-y-4 flex-grow">
           <StackTags stack={stack} />
-          <h3 className="font-headline-sm text-headline-sm text-white">{title}</h3>
+          <h3 className="font-headline-sm text-headline-sm text-card-foreground">{title}</h3>
           {shortDescription && (
-            <p className="font-body-md text-body-md text-on-surface-variant">{shortDescription}</p>
+            <p className="font-body-md text-body-md text-muted-foreground">{shortDescription}</p>
           )}
         </div>
       </a>
