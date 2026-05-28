@@ -101,8 +101,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TABLE "search_categories" CASCADE;
   DROP TABLE "search" CASCADE;
   DROP TABLE "search_rels" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_search_fk";
-  
   DROP INDEX "payload_locked_documents_rels_search_id_idx";
   ALTER TABLE "pages_blocks_cta" ADD COLUMN "background_image_id" integer;
   ALTER TABLE "_pages_v_blocks_cta" ADD COLUMN "background_image_id" integer;
