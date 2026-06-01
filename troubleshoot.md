@@ -4,6 +4,25 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## `CREATE TYPE IF NOT EXISTS` causes migration syntax error
+**Date**: 2026-06-01
+**Symptom**: Deployment fails during `pnpm run ci` / `payload migrate` with:
+```
+caused by: error: syntax error at or near "NOT"
+```
+The failing query contains `CREATE TYPE IF NOT EXISTS "public"."<enum_name>" AS ENUM(...)`.
+**Root cause**: PostgreSQL does not support `IF NOT EXISTS` on `CREATE TYPE`. It is only valid on `CREATE TABLE`, `CREATE INDEX`, and a few other DDL statements — not on type creation.
+**Fix**: Remove `IF NOT EXISTS` from any `CREATE TYPE` statement in migration files. Migrations only run once (Payload tracks applied migrations in `payload_migrations`), so the guard is unnecessary — and invalid.
+```sql
+-- ❌ Invalid
+CREATE TYPE IF NOT EXISTS "public"."enum_foo" AS ENUM('a', 'b');
+
+-- ✅ Correct
+CREATE TYPE "public"."enum_foo" AS ENUM('a', 'b');
+```
+
+---
+
 ## Always use `pnpm add` to install packages — `npm install` fails
 
 **Date**: 2026-06-01
