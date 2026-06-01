@@ -194,6 +194,9 @@ export default async function ProjectPage({ params: paramsPromise }: Args) {
           <ProjectContentRenderer data={project.content} />
         </section>
       )}
+
+      {/* ── Project Navigation ──────────────────────────────────── */}
+      <ProjectNav currentSlug={decodedSlug} />
     </div>
   )
 }
@@ -227,3 +230,94 @@ const queryProjectBySlug = cache(async ({ slug }: { slug: string }) => {
 
   return result.docs?.[0] || null
 })
+
+const queryAllProjectSlugsOrdered = cache(async () => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'projects',
+    depth: 1,
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    sort: '-launchDate',
+    select: {
+      slug: true,
+      title: true,
+      launchDate: true,
+      coverImage: true,
+    },
+  })
+
+  return result.docs
+})
+
+async function ProjectNav({ currentSlug }: { currentSlug: string }) {
+  const all = await queryAllProjectSlugsOrdered()
+  const idx = all.findIndex((p) => p.slug === currentSlug)
+
+  if (idx === -1 || all.length < 2) return null
+
+  const prev = idx < all.length - 1 ? all[idx + 1] : null
+  const next = idx > 0 ? all[idx - 1] : null
+
+  if (!prev && !next) return null
+
+  return (
+    <section className="container pt-16">
+      <div className="border-t border-border/30 mb-10" />
+      <div className="flex flex-col md:flex-row md:justify-between gap-8">
+        {prev ? (
+          <a
+            href={`/projects/${prev.slug}`}
+            className="glass-card border border-border/40 bg-card/80 neon-glow-pink hover:border-neon-pink transition-all duration-500 rounded-xl overflow-hidden flex flex-col group md:w-[40%]"
+          >
+            {prev.coverImage && typeof prev.coverImage === 'object' && (
+              <div className="relative aspect-video w-full overflow-hidden">
+                <MediaComponent
+                  resource={prev.coverImage as Media}
+                  fill
+                  imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            )}
+            <div className="p-6 flex flex-col gap-1">
+              <span className="font-label-caps text-label-caps text-muted-foreground uppercase tracking-widest">
+                ← Previous
+              </span>
+              <span className="font-headline-sm text-foreground">{prev.title}</span>
+            </div>
+          </a>
+        ) : (
+          <div className="md:w-[40%]" />
+        )}
+
+        {next ? (
+          <a
+            href={`/projects/${next.slug}`}
+            className="glass-card border border-border/40 bg-card/80 neon-glow-pink hover:border-neon-pink transition-all duration-500 rounded-xl overflow-hidden flex flex-col group md:w-[40%] md:items-end"
+          >
+            {next.coverImage && typeof next.coverImage === 'object' && (
+              <div className="relative aspect-video w-full overflow-hidden">
+                <MediaComponent
+                  resource={next.coverImage as Media}
+                  fill
+                  imgClassName="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            )}
+            <div className="p-6 flex flex-col gap-1 w-full md:items-end">
+              <span className="font-label-caps text-label-caps text-muted-foreground uppercase tracking-widest">
+                Next →
+              </span>
+              <span className="font-headline-sm text-foreground">{next.title}</span>
+            </div>
+          </a>
+        ) : (
+          <div className="md:w-[40%]" />
+        )}
+      </div>
+    </section>
+  )
+}
