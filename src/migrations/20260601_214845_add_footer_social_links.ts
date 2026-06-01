@@ -2,7 +2,7 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postg
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE IF NOT EXISTS "public"."enum_footer_social_links_platform" AS ENUM('github', 'linkedin', 'x');
+   CREATE TYPE "public"."enum_footer_social_links_platform" AS ENUM('github', 'linkedin', 'x');
   CREATE TABLE IF NOT EXISTS "footer_social_links" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
