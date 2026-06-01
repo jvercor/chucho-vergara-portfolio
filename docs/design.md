@@ -206,3 +206,40 @@ This is the most common source of confusion. Read this before writing any styles
 ### Static tokens are not wrong — use them knowingly
 
 Static tokens (`text-on-surface-variant`, etc.) are valid when a component is intentionally dark-only by design. Document that intent with a comment so future agents don't "fix" it:
+
+---
+
+## Typography
+
+### Font stack
+
+| Role | Font | CSS variable |
+|------|------|--------------|
+| Headings (h1–h6) | Geist Sans ExtraBold (800) | `var(--font-heading)` → `var(--font-geist-sans)` |
+| Body / UI text | Inter (400, 500, 700) | `var(--font-sans)` → `var(--font-inter)` |
+| Monospace / code | Geist Mono | `var(--font-mono)` → `var(--font-geist-mono)` |
+
+Inter is loaded via `next/font/google` in `src/app/(frontend)/layout.tsx`. The CSS variable `--font-inter` is injected by the Next.js font system and consumed by `--font-sans` in `@theme`.
+
+### Type scale tokens
+
+| Token | Size | Line height | Weight | Font |
+|-------|------|-------------|--------|------|
+| `headline-lg` | 48px | 56px | 800 | Geist Sans |
+| `headline-lg-mobile` | 32px | 40px | 800 | Geist Sans |
+| `headline-md` | 32px | 40px | 800 | Geist Sans |
+| `headline-sm` | 24px | 32px | 800 | Geist Sans |
+| `body-lg` | 18px | 28px | 400 | Inter |
+| `body-md` | 16px | 24px | 400 | Inter |
+| `body-sm` | 14px | 20px | 400 | Inter |
+| `label-caps` | 12px | 16px | 700 | Inter |
+| `mono-code` | 14px | 20px | 500 | Geist Mono |
+
+Use the compound `text-{token}` utility (sets font-family + size + weight together):
+
+```tsx
+<h1 className="text-headline-lg">Page title</h1>
+<p className="text-body-md">Body copy</p>
+```
+
+Headings `h1`–`h6` already receive `font-family: var(--font-heading); font-weight: 800` from `@layer base`, so plain semantic headings render correctly without an explicit class.

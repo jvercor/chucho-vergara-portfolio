@@ -79,7 +79,7 @@ The alternative palette, toggled by the user via a sun/moon icon in the Nav. Sam
 _Avoid_: Day mode, white theme
 
 **Design System Tokens**:
-Color, typography, and spacing tokens sourced from the `hyper_violet_engineering` template (local, gitignored). Tokens live in `tailwind.config.mjs` under `theme.extend` — colors, fontFamily, fontSize (compound values), and spacing. Font is Geist (not the template's Inter). See ADR 0003 for the full token map and architecture decisions.
+Color, typography, and spacing tokens sourced from the `hyper_violet_engineering` template (local, gitignored). Tokens live in `tailwind.config.mjs` under `theme.extend` — colors, fontFamily, fontSize (compound values), and spacing. Fonts: Geist Sans ExtraBold (800) for headings, Inter for body text, Geist Mono for code. See ADR 0003 for the full token map and architecture decisions.
 _Avoid_: CSS variables, Tailwind defaults
 
 ### Visual / interaction
