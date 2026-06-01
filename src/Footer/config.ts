@@ -25,6 +25,31 @@ export const Footer: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'socialLinks',
+      type: 'array',
+      maxRows: 3,
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'platform',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'GitHub', value: 'github' },
+            { label: 'LinkedIn', value: 'linkedin' },
+            { label: 'X', value: 'x' },
+          ],
+        },
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [revalidateFooter],

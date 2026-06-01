@@ -75,7 +75,7 @@ The default color palette. Background `#0a0a0a` (surface-black), text `#e2e2e2` 
 _Avoid_: Night mode, dark mode (use Dark Theme)
 
 **Light Theme**:
-The alternative palette, toggled by the user via a sun/moon icon in the Nav. Same layout, inverted colors.
+The alternative palette, toggled by the user via a `btn-solid` icon button (sun/moon) in the Footer. Same layout, inverted colors.
 _Avoid_: Day mode, white theme
 
 **Design System Tokens**:

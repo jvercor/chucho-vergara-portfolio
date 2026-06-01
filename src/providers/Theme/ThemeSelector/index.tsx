@@ -4,6 +4,7 @@ import { Moon, Sun } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import { useTheme } from '..'
+import { Button } from '@/components/ui/button'
 
 export const ThemeSelector: React.FC = () => {
   const { theme, setTheme } = useTheme()
@@ -15,18 +16,21 @@ export const ThemeSelector: React.FC = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
+  const isDark = mounted && theme === 'dark'
+
   return (
-    <button
-      aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+    <Button
+      variant="solid"
+      size="sm"
+      aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       onClick={toggle}
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-accent transition-colors"
       suppressHydrationWarning
     >
-      {mounted && (theme === 'dark' ? (
+      {mounted && (isDark ? (
         <Sun className="w-4 h-4" />
       ) : (
         <Moon className="w-4 h-4" />
       ))}
-    </button>
+    </Button>
   )
 }

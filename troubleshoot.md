@@ -4,6 +4,24 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## Always use `pnpm add` to install packages — `npm install` fails
+
+**Date**: 2026-06-01
+**Symptom**: Running `npm install <pkg>` errors with `Cannot read properties of null (reading 'matches')` and exits with code 1 after several minutes.
+**Root cause**: The project lockfile is managed by pnpm. npm's arborist cannot reconcile the pnpm-managed `node_modules/.pnpm` tree and crashes during ideal-tree computation.
+**Fix**: Always use `pnpm add <pkg>` (or `pnpm add -D <pkg>` for dev deps) to install new packages in this project.
+
+---
+
+## Payload scaffolds duplicate `ALTER TYPE ADD VALUE` in new migrations
+
+**Date**: 2026-06-01
+**Symptom**: A newly scaffolded migration's `up()` contains `ALTER TYPE "public"."<enum>" ADD VALUE '<value>'` for enum values that were already added by a prior migration — and without `IF NOT EXISTS`. This causes the deploy to fail on the live DB where those values already exist.
+**Root cause**: Payload computes the schema diff based on its own JSON snapshot, which may not perfectly reflect what prior migration files have already applied. It re-emits `ALTER TYPE ADD VALUE` statements for values it considers "new" even when a previous migration already handled them.
+**Fix**: After running `npx payload migrate:create`, inspect the generated `up()` and remove any `ALTER TYPE … ADD VALUE` lines that duplicate statements already present in earlier migration files. Replace bare `CREATE TYPE` / `CREATE TABLE` / `CREATE INDEX` with `IF NOT EXISTS` variants as a general safety measure.
+
+---
+
 ## Admin panel 500 — `folders_id` column missing from `payload_locked_documents_rels`
 **Date**: 2026-05-28
 **Symptom**: `/admin` returns 500 for every request. Vercel runtime logs show:
