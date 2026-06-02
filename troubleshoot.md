@@ -196,6 +196,28 @@ This also affects **related collections fetched at depth**: if Collection A has 
 
 ---
 
+## New CMS pages return 500 (`DYNAMIC_SERVER_USAGE`) immediately after publishing
+
+**Date**: 2026-06-02
+**Symptom**: A page freshly published in the Payload admin returns HTTP 500. Vercel runtime logs show:
+```
+[Error: An error occurred in the Server Components render. The specific message is omitted in production builds...]
+digest: 'DYNAMIC_SERVER_USAGE'
+Failed to handle /<slug>
+```
+**Root cause**: When a page is published, the `revalidatePage` hook calls `revalidatePath(path)` and `revalidateTag('pages-sitemap')`. This schedules a background ISR revalidation. During that first revalidation pass, the page is temporarily unavailable and concurrent requests may receive 500s. The error resolves itself once the revalidation completes and the cache re-populates.
+
+This typically affects pages published **after** the last deployment (not yet in `generateStaticParams`). They have no pre-built static version, so Next.js renders them on-demand; the initial on-demand render and simultaneous ISR warming can briefly conflict.
+
+**Fix**: Wait 15–30 seconds after publishing and refresh. The page will serve correctly once the ISR revalidation cycle finishes. No code change required.
+
+If the error **persists** beyond a minute, check:
+1. The page has `_status: 'published'` in the DB (not stuck in draft).
+2. No block on the page is calling a dynamic API inside `unstable_cache` (see `getCachedGlobal` / `getCachedRedirects` patterns).
+3. No related collection uses `authenticatedOrPublished` without drafts (see `_status` entry above).
+
+---
+
 
 **Date**: YYYY-MM-DD
 **Symptom**: What went wrong / what error appeared
