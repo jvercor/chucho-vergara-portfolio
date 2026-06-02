@@ -11,7 +11,7 @@ The landing page. Contains a hero with a Three.js 3D scene and an identity card.
 _Avoid_: Index, landing page
 
 **Projects Page**:
-A fixed hardcoded route at `/projects`. Layout: short text hero (h1 + tagline), a bento grid of the two most-recently-launched published Projects (large 8-col + small 4-col), then all remaining published Projects in a 3-per-row small-card grid. Projects are sorted by Launch Date descending. Card components are shared via `src/components/ProjectCards`.
+A fixed hardcoded route at `/projects`. Layout: short text hero (h1 + tagline), a bento grid of the two most-recently-launched published Projects (large 8-col + small 4-col), then all remaining published Projects in a 3-per-row small-card grid. Projects are sorted by Launch Date descending. Card components are shared via `src/components/ProjectCards`. SEO metadata and optional trailing CMS blocks (e.g. CTA) are supplied by a companion `Pages` collection document with slug `projects`. If no such document exists the page falls back to a hardcoded title.
 _Avoid_: Project list, project archive, all projects
 
 **Featured Projects**:
