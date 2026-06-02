@@ -95,8 +95,14 @@ A rendered segment of a Project's rich-text body content. When a `content` field
 _Avoid_: Section card, content card
 
 **Hero**:
-The full-screen section at the top of Home. Contains a centered content block (name h1, role subtitle, tagline, CTAs, availability badge) with atmospheric glow blobs and a scroll indicator. Uses adaptive CSS-var tokens so it renders correctly in both Dark and Light Theme.
+The full-screen section at the top of Home. Contains a centered content block (name h1, role subtitle, tagline, CTAs, availability badge) with atmospheric glow blobs and a scroll indicator. Uses adaptive CSS-var tokens so it renders correctly in both Dark and Light Theme. Distinct from Medium Impact Hero.
 _Avoid_: Banner, splash
+
+**Medium Impact Hero**:
+A CMS-controlled hero variant for interior pages (e.g. Projects, Resume). Two-column layout on desktop: rich text (H1 + body paragraph) on the left, an optional download button on the right. Fields: `richText` (Lexical — editor writes H1 as the title and a paragraph as the tagline), `downloadFile` (Payload media upload, optional), and `downloadLabel` (text for the download button, optional). No image, no badge, no highlight word. Desktop alignment is `items-end` — the download button anchors to the bottom of the left text block.
+_Avoid_: Banner hero, section header
+
+
 
 **3D Scene**:
 Removed from the Hero. Previously a Three.js matcap-shaded GLB with mouse-tracking. May be reintroduced in a future section.

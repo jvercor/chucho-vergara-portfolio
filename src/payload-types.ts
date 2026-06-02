@@ -241,6 +241,14 @@ export interface Page {
         }[]
       | null;
     media?: (number | null) | Media;
+    /**
+     * Optional file (e.g. PDF résumé) — renders a download button when set.
+     */
+    downloadFile?: (number | null) | Media;
+    /**
+     * Label shown on the download button (e.g. "DOWNLOAD PDF").
+     */
+    downloadLabel?: string | null;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FeaturedProjectsBlock | FormBlock)[];
   meta?: {
@@ -1150,6 +1158,8 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        downloadFile?: T;
+        downloadLabel?: T;
       };
   layout?:
     | T
