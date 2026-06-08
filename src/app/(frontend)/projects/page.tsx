@@ -8,6 +8,7 @@ import PageClient from './page.client'
 
 import { LargeCard, SmallCard } from '@/components/ProjectCards'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -49,16 +50,7 @@ export default async function Page() {
       <PageClient />
       {draft && <LivePreviewListener />}
 
-      {/* Hero */}
-      <section className="container py-section-gap">
-        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground mb-6">
-          Featured <span className="text-neon-pink">Engineering</span> Projects
-        </h1>
-        <p className="font-body-lg text-body-lg text-muted-foreground">
-          A curated selection of performance-critical applications, developer tools, and
-          architectural experiments built with precision and modern stack.
-        </p>
-      </section>
+      {companionPage?.hero && <RenderHero {...companionPage.hero} />}
 
       {/* Bento — top two projects */}
       {featured && (
