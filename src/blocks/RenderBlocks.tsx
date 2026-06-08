@@ -7,6 +7,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FeaturedProjectsBlock } from '@/blocks/FeaturedProjects/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { LogoWallBlock } from '@/blocks/LogoWall/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
 const blockComponents = {
@@ -15,6 +16,7 @@ const blockComponents = {
   cta: CallToActionBlock,
   featuredProjects: FeaturedProjectsBlock,
   formBlock: FormBlock,
+  logoWall: LogoWallBlock,
   mediaBlock: MediaBlock,
 }
 

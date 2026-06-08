@@ -250,7 +250,15 @@ export interface Page {
      */
     downloadLabel?: string | null;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FeaturedProjectsBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FeaturedProjectsBlock
+    | FormBlock
+    | LogoWallBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -874,6 +882,39 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoWallBlock".
+ */
+export interface LogoWallBlock {
+  /**
+   * Section heading displayed above the logos (e.g. "My Current Stack").
+   */
+  heading: string;
+  /**
+   * Optional sentence below the eyebrow.
+   */
+  subtitle?: string | null;
+  /**
+   * Each logo is a gray SVG that turns white (dark theme) or black (light theme) on hover.
+   */
+  logos?:
+    | {
+        /**
+         * Used as the accessible label (e.g. "Next.js").
+         */
+        label: string;
+        /**
+         * Paste raw SVG markup with gray fills. IMPORTANT: use inline fill/stroke attributes — not CSS classes from <style>/<defs>. Class names like .fil0 are global and will collide when multiple logos render on the same page, making some logos invisible. Also remove the <?xml ...?> prolog, width/height attributes, and any <defs> block.
+         */
+        svg: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logoWall';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1170,6 +1211,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         featuredProjects?: T | FeaturedProjectsBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        logoWall?: T | LogoWallBlockSelect<T>;
       };
   meta?:
     | T
@@ -1278,6 +1320,23 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoWallBlock_select".
+ */
+export interface LogoWallBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  logos?:
+    | T
+    | {
+        label?: T;
+        svg?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
