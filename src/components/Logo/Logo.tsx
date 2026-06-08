@@ -1,5 +1,5 @@
 'use client'
-import clsx from 'clsx'
+import { cn } from '@/utilities/ui'
 import React, { useEffect, useState } from 'react'
 import { useTheme } from '@/providers/Theme'
 
@@ -38,7 +38,7 @@ export const Logo = (props: Props) => {
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
+      className={cn('max-w-[9.375rem] w-full h-[34px]', className)}
       src={src}
       suppressHydrationWarning
     />
