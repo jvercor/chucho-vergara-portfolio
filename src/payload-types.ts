@@ -216,6 +216,18 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    /**
+     * Availability label shown above the heading (e.g. "Available for new opportunities").
+     */
+    badge?: string | null;
+    /**
+     * Primary headline (e.g. "Jesus Vergara Cortes").
+     */
+    heading?: string | null;
+    /**
+     * Short subtitle below the heading (e.g. "Sr. Full-stack Engineer").
+     */
+    tagline?: string | null;
     links?:
       | {
           link: {
@@ -249,6 +261,22 @@ export interface Page {
      * Label shown on the download button (e.g. "DOWNLOAD PDF").
      */
     downloadLabel?: string | null;
+    /**
+     * Code snippet displayed in the terminal window on the right panel.
+     */
+    heroCode?: string | null;
+    /**
+     * Filename shown in the terminal window header (e.g. "system_init.rs").
+     */
+    heroCodeFilename?: string | null;
+    /**
+     * Full-bleed background image for the right panel.
+     */
+    backgroundImage?: (number | null) | Media;
+    /**
+     * Floating card image overlaid on the right panel background.
+     */
+    foregroundImage?: (number | null) | Media;
   };
   layout: (
     | CallToActionBlock
@@ -1183,6 +1211,9 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
+        badge?: T;
+        heading?: T;
+        tagline?: T;
         links?:
           | T
           | {
@@ -1201,6 +1232,10 @@ export interface PagesSelect<T extends boolean = true> {
         media?: T;
         downloadFile?: T;
         downloadLabel?: T;
+        heroCode?: T;
+        heroCodeFilename?: T;
+        backgroundImage?: T;
+        foregroundImage?: T;
       };
   layout?:
     | T

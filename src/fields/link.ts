@@ -6,7 +6,7 @@ export type LinkAppearances = 'default' | 'outline' | 'solid'
 
 export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
   default: {
-    label: 'Default',
+    label: 'Primary',
     value: 'default',
   },
   outline: {

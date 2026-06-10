@@ -101,7 +101,7 @@ A rendered segment of a Project's rich-text body content. When a `content` field
 _Avoid_: Section card, content card
 
 **Hero**:
-The full-screen section at the top of Home. Contains a centered content block (name h1, role subtitle, tagline, CTAs, availability badge) with atmospheric glow blobs and a scroll indicator. Uses adaptive CSS-var tokens so it renders correctly in both Dark and Light Theme. Distinct from Medium Impact Hero.
+The CMS-controlled full-screen section at the top of Home. Desktop layout: 50/50 split — text content on the left (availability badge, name h1, role tagline, two CTA links) and a full-bleed image panel on the right (background image with a floating foreground card on top). Mobile: stacked, image panel below text. Atmospheric glow blobs in the background. Uses adaptive CSS-var tokens for Dark and Light Theme. Distinct from Medium Impact Hero. Fields: `badge` (text), `heading` (text), `tagline` (text), `links` (up to 2 CTA links with appearance), `backgroundImage` (media), `foregroundImage` (media).
 _Avoid_: Banner, splash
 
 **Medium Impact Hero**:

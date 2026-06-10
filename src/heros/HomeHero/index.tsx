@@ -1,54 +1,83 @@
 import React from 'react'
-import { Button } from '@/components/ui/button'
 
-export const HomeHero: React.FC = () => {
+import type { Page } from '@/payload-types'
+import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
+
+export const HomeHero: React.FC<Page['hero']> = ({
+  badge,
+  heading,
+  tagline,
+  links,
+  backgroundImage,
+  heroCode,
+  heroCodeFilename,
+}) => {
   return (
-    <section className="relative min-h-[calc(100vh-160px)] flex flex-col items-center justify-center text-center px-gutter overflow-hidden">
-      {/* Atmospheric glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-russian-violet/20 rounded-full blur-[120px] -z-10" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[600px] h-[600px] bg-dark-violet/10 rounded-full blur-[120px] -z-10" />
+    <section className="container py-[15px] lg:py-section-gap">
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-16 items-center">
+        {/* Left panel — text content */}
+        <div className="space-y-6 text-center lg:text-left">
+          {badge && (
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5">
+              <span
+                className="w-2 h-2 rounded-full bg-neon-pink animate-pulse"
+                aria-hidden="true"
+              />
+              <span className="font-label-caps text-[10px] uppercase tracking-widest text-primary">
+                {badge}
+              </span>
+            </div>
+          )}
 
-      {/* Hero content */}
-      <div className="max-w-4xl space-y-8 z-10">
-        {/* Availability badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-4">
-          <span className="w-2 h-2 rounded-full bg-neon-pink animate-pulse" aria-hidden="true" />
-          <span className="font-label-caps text-[10px] uppercase tracking-widest text-primary">
-            Available for new opportunities
-          </span>
+          {heading && (
+            <h1 className="text-headline-lg-mobile md:text-headline-xl text-foreground">
+              {heading}
+            </h1>
+          )}
+
+          {tagline && <p className="text-body-lg text-muted-foreground">{tagline}</p>}
+
+          {Array.isArray(links) && links.length > 0 && (
+            <div className="flex flex-row items-start justify-center lg:justify-start gap-4 pt-2">
+              {links.map(({ link }, i) => (
+                <CMSLink key={i} {...link} />
+              ))}
+            </div>
+          )}
         </div>
-        <div className="font-headline-sm text-xl tracking-widest text-muted-foreground mb-4">
-          Sr. Full-stack Engineer
+
+        {/* Right panel */}
+        <div className="relative overflow-hidden rounded-2xl min-h-[450px] lg:min-h-[580px]">
+          {/* Background image */}
+          {backgroundImage && typeof backgroundImage === 'object' && (
+            <div className="absolute inset-0">
+              <Media fill imgClassName="object-cover" priority resource={backgroundImage} />
+            </div>
+          )}
+
+          {/* Terminal window — hardcoded shell, CMS-editable code */}
+          <div className="absolute inset-0 flex items-center justify-center lg:justify-end p-4 md:p-6">
+            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden w-full lg:max-w-[85%] shadow-2xl">
+              {/* Title bar */}
+              <div className="bg-surface-container px-3 py-1.5 md:px-4 md:py-2 flex items-center justify-between border-b border-outline-variant">
+                <div className="flex gap-2" aria-hidden="true">
+                  <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-500/50" />
+                  <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-yellow-500/50" />
+                  <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-green-500/50" />
+                </div>
+                <span className="font-label-caps text-[10px] text-on-surface-variant tracking-widest uppercase">
+                  {heroCodeFilename ?? 'code'}
+                </span>
+                <div className="w-6 md:w-12" aria-hidden="true" />
+              </div>
+              {/* Code content */}
+              <pre className="p-4 font-mono-ascii text-mono-ascii text-on-surface-variant overflow-x-auto text-center">
+                <code>{heroCode ?? ''}</code>
+              </pre>
+            </div>
+          </div>
         </div>
-        {/* Headline */}
-        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground tracking-tight">
-          Jesus <span className="text-neon-pink">Vergara Cortes.</span>
-        </h1>
-
-        {/* Tagline */}
-        <p className="font-body-lg text-body-lg text-muted-foreground max-w-2xl mx-auto">
-          I build web systems that reduce friction and drive real results — turning complex problems
-          into software that helps people work smarter and make better decisions.
-        </p>
-
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Button variant="primary" size="clear" asChild>
-            <a href="/projects">View Projects</a>
-          </Button>
-          <Button variant="hero-outline" size="clear" asChild>
-            <a href="/contact">Get in touch</a>
-          </Button>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-12 flex flex-col items-center gap-2 opacity-40"
-        aria-hidden="true"
-      >
-        <span className="font-label-caps text-label-caps uppercase text-foreground">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-neon-pink to-transparent" />
       </div>
     </section>
   )

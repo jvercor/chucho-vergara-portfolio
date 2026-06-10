@@ -57,11 +57,35 @@ export const hero: Field = {
       }),
       label: false,
     },
+    {
+      name: 'badge',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Availability label shown above the heading (e.g. "Available for new opportunities").',
+      },
+    },
+    {
+      name: 'heading',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Primary headline (e.g. "Jesus Vergara Cortes").',
+      },
+    },
+    {
+      name: 'tagline',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Short subtitle below the heading (e.g. "Sr. Full-stack Engineer").',
+      },
+    },
     linkGroup({
       overrides: {
         maxRows: 2,
         admin: {
-          condition: (_, { type } = {}) => type === 'highImpact',
+          condition: (_, { type } = {}) => ['highImpact', 'homeHero'].includes(type),
         },
       },
     }),
@@ -90,6 +114,43 @@ export const hero: Field = {
       admin: {
         condition: (_, { type } = {}) => type === 'mediumImpact',
         description: 'Label shown on the download button (e.g. "DOWNLOAD PDF").',
+      },
+    },
+    {
+      name: 'heroCode',
+      type: 'code',
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Code snippet displayed in the terminal window on the right panel.',
+        language: 'rust',
+      },
+    },
+    {
+      name: 'heroCodeFilename',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Filename shown in the terminal window header (e.g. "system_init.rs").',
+      },
+    },
+    {
+      name: 'backgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Full-bleed background image for the right panel.',
+      },
+    },
+    {
+      name: 'foregroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+      admin: {
+        condition: (_, { type } = {}) => type === 'homeHero',
+        description: 'Floating card image overlaid on the right panel background.',
       },
     },
   ],

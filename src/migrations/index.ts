@@ -4,6 +4,9 @@ import * as migration_20260528_092154_add_solid_button_appearance from './202605
 import * as migration_20260601_214845_add_footer_social_links from './20260601_214845_add_footer_social_links';
 import * as migration_20260602_190000_add_medium_impact_download_fields from './20260602_190000_add_medium_impact_download_fields';
 import * as migration_20260607_223200_add_logo_wall_block from './20260607_223200_add_logo_wall_block';
+import * as migration_20260608_180000_add_home_hero_fields from './20260608_180000_add_home_hero_fields';
+
+import * as migration_20260608_190000_add_home_hero_code_fields from './20260608_190000_add_home_hero_code_fields';
 
 export const migrations = [
   {
@@ -36,5 +39,16 @@ export const migrations = [
     down: migration_20260607_223200_add_logo_wall_block.down,
     name: '20260607_223200_add_logo_wall_block',
   },
+  {
+    up: migration_20260608_180000_add_home_hero_fields.up,
+    down: migration_20260608_180000_add_home_hero_fields.down,
+    name: '20260608_180000_add_home_hero_fields',
+  },
+  {
+    up: migration_20260608_190000_add_home_hero_code_fields.up,
+    down: migration_20260608_190000_add_home_hero_code_fields.down,
+    name: '20260608_190000_add_home_hero_code_fields',
+  },
 ];
+
 

@@ -20,6 +20,12 @@ type CMSLinkType = {
   url?: string | null
 }
 
+const appearanceToVariant: Record<string, ButtonProps['variant']> = {
+  default: 'primary',
+  outline: 'hero-outline',
+  solid: 'solid',
+}
+
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
     type,
@@ -56,7 +62,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   }
 
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
+    <Button asChild className={className} size={size} variant={appearanceToVariant[appearance as string] ?? (appearance as ButtonProps['variant'])}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}
