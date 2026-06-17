@@ -218,6 +218,59 @@ If the error **persists** beyond a minute, check:
 
 ---
 
+## TypeScript type error: `RefObject<HTMLDivElement>` vs `RefObject<HTMLDivElement | null>`
+
+**Date**: 2026-06-17
+**Symptom**: Build fails with TypeScript error:
+```
+Type 'RefObject<HTMLDivElement | null>' is not assignable to type 'RefObject<HTMLDivElement>'.
+  Type 'HTMLDivElement | null' is not assignable to type 'HTMLDivElement'.
+```
+**Root cause**: React's `useRef<T>(null)` creates a `RefObject<T | null>`, but the type signature was declared as `RefObject<T>` (without `| null`). When passing the ref between components or as a prop, TypeScript enforces strict nullability checks.
+
+**Fix**: Change the ref type to explicitly include `null`:
+```tsx
+// ❌ Wrong
+const containerRef = useRef<HTMLDivElement>(null)
+
+// ✅ Correct
+const containerRef = useRef<HTMLDivElement | null>(null)
+```
+Update both the hook's internal ref and any component prop types that receive the ref to use `RefObject<HTMLDivElement | null>`.
+
+**Known occurrences on this project**:
+- `src/hooks/useFocusTrap.ts` — changed `containerRef` type to `RefObject<HTMLDivElement | null>`
+- `src/Header/Nav/NavDrawer.tsx` — updated `focusTrapRef` prop type to match
+
+---
+
+## CMSLink component does not accept `onClick` prop
+
+**Date**: 2026-06-17
+**Symptom**: Build fails with TypeScript error:
+```
+Property 'onClick' does not exist on type 'IntrinsicAttributes & CMSLinkType'.
+```
+**Root cause**: The `CMSLink` component (`src/components/Link/index.tsx`) is a wrapper around `next/link` and `Button`, but it doesn't forward or accept an `onClick` prop. It only accepts the props defined in `CMSLinkType` (appearance, label, url, reference, etc.).
+
+**Fix**: Wrap the `CMSLink` in a `<div>` with the `onClick` handler instead of passing it to `CMSLink`:
+```tsx
+// ❌ Wrong
+<CMSLink {...link} onClick={handleClick} />
+
+// ✅ Correct
+<div onClick={handleClick}>
+  <CMSLink {...link} />
+</div>
+```
+
+**Known occurrences on this project**:
+- `src/Header/Nav/NavDrawer.tsx` — wrapped nav links in `<div onClick={handleLinkClick}>` to close drawer after navigation
+
+**Alternative approach**: If `onClick` is needed frequently, consider extending `CMSLinkType` to accept `onClick` and forward it through to the underlying `Link`/`Button`. For one-off cases, the wrapper div is simpler.
+
+---
+
 
 **Date**: YYYY-MM-DD
 **Symptom**: What went wrong / what error appeared
