@@ -47,8 +47,20 @@ The public-facing section that lists all published Posts. One of the four top-le
 _Avoid_: Articles, news, writing
 
 **Nav**:
-The persistent top navigation bar linking to Home, Projects, Resume, and Blog.
+The persistent top navigation bar linking to Home, Projects, Resume, and Blog. On desktop (≥768px), displays as a horizontal row of links. On mobile and tablet (<768px), collapses to a Nav Toggle button that opens the Nav Drawer. Active link indicated with `text-neon-pink`.
 _Avoid_: Header nav, menu, sidebar
+
+**Nav Toggle**:
+The hamburger menu button (24px icon in 40x40px tap target) that appears on mobile/tablet (<768px). Animates from three horizontal lines to an X when the Nav Drawer is open. Uses `text-foreground` with `hover:text-neon-pink`. Built with three `<span>` elements and CSS transforms.
+_Avoid_: Menu button, burger button, hamburger icon
+
+**Nav Drawer**:
+The mobile/tablet navigation overlay that slides in from the right when the Nav Toggle is tapped. 85vw wide, uses `bg-background/90 backdrop-blur-sm` (same treatment as scrolled Header), z-50. Contains nav links vertically stacked as large centered touch targets. Slides in/out with 300ms transition. Closes via: X button, backdrop tap, any nav link tap, or Escape key. Enforces focus trap and scroll lock while open.
+_Avoid_: Mobile menu, side drawer, navigation panel
+
+**Backdrop**:
+The semi-transparent overlay (`bg-black/50 backdrop-blur-sm`, z-40) that appears behind the Nav Drawer when open on mobile. Tapping it closes the drawer. Locks body scroll while visible.
+_Avoid_: Overlay, modal background, scrim
 
 ### Resume content collections
 

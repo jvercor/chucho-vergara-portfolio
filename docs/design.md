@@ -243,3 +243,140 @@ Use the compound `text-{token}` utility (sets font-family + size + weight togeth
 ```
 
 Headings `h1`–`h6` already receive `font-family: var(--font-heading); font-weight: 800` from `@layer base`, so plain semantic headings render correctly without an explicit class.
+
+---
+
+## Mobile Navigation
+
+The Nav adapts responsively: horizontal links on desktop, collapsible drawer on mobile/tablet.
+
+### Breakpoint behavior
+
+| Screen size | Display pattern |
+|-------------|-----------------|
+| `< 768px` (below md) | Nav Toggle button visible, desktop nav hidden |
+| `≥ 768px` (md and up) | Desktop horizontal nav visible, Nav Toggle hidden |
+
+Use Tailwind responsive prefixes: `md:hidden` for mobile-only elements, `hidden md:flex` for desktop-only.
+
+### Nav Toggle (hamburger button)
+
+The button that opens the Nav Drawer on mobile.
+
+```tsx
+<button
+  className="w-10 h-10 flex items-center justify-center text-foreground hover:text-neon-pink transition-colors md:hidden"
+  aria-label="Toggle navigation"
+>
+  {/* Three span elements for hamburger, see implementation */}
+</button>
+```
+
+| Spec | Value |
+|------|-------|
+| Button size | 40x40px (`w-10 h-10`) |
+| Icon size | 24px (spans sized accordingly) |
+| Color | `text-foreground` rest, `hover:text-neon-pink` |
+| Animation | Three `<span>` elements transform to X when open |
+| Transition | `transition-colors` on color, `transition-transform duration-300` on spans |
+
+**Hamburger → X animation:** Top span rotates 45deg and translates, middle span fades out (`opacity-0`), bottom span rotates -45deg and translates. All spans use `transition-transform duration-300 ease-out`.
+
+### Nav Drawer
+
+The slide-in overlay panel containing navigation links.
+
+```tsx
+<div className="fixed inset-y-0 right-0 w-[85vw] bg-background/90 backdrop-blur-sm border-l border-border z-50 flex flex-col items-center justify-center gap-6 transition-transform duration-300">
+  {/* Nav links here */}
+</div>
+```
+
+| Spec | Value |
+|------|-------|
+| Position | `fixed inset-y-0 right-0` (full height, right edge) |
+| Width | `w-[85vw]` (leaves 15% visible) |
+| Background | `bg-background/90 backdrop-blur-sm` (matches Header when scrolled) |
+| Border | `border-l border-border` |
+| Z-index | `z-50` |
+| Layout | `flex flex-col items-center justify-center` (vertically centered) |
+| Link spacing | `gap-6` between links |
+| Animation | Slide only (no fade), `transition-transform duration-300 ease-out` |
+
+**States:**
+- **Closed:** `translate-x-full` (off-screen right)
+- **Open:** `translate-x-0` (visible)
+
+**Link styling inside drawer:**
+- Large touch targets: `text-headline-sm py-4` (bigger than desktop)
+- Center-aligned with parent flex
+- Active link: `text-neon-pink`
+- Inactive links: `text-foreground hover:text-neon-pink`
+
+### Backdrop
+
+The semi-transparent overlay behind the drawer.
+
+```tsx
+<div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
+```
+
+| Spec | Value |
+|------|-------|
+| Position | `fixed inset-0` (full viewport) |
+| Background | `bg-black/50 backdrop-blur-sm` |
+| Z-index | `z-40` (below drawer, above everything else) |
+| Transition | `transition-opacity duration-300` |
+
+**States:**
+- **Hidden:** `opacity-0 pointer-events-none`
+- **Visible:** `opacity-100`
+
+### Active link indication
+
+Both desktop and mobile nav must indicate the current page.
+
+```tsx
+// Check current route
+const pathname = usePathname()
+const isActive = link.url === pathname
+
+// Apply conditional color
+<CMSLink
+  className={cn(
+    "transition-colors no-underline hover:no-underline",
+    isActive ? "text-neon-pink" : "text-foreground hover:text-neon-pink"
+  )}
+/>
+```
+
+Active links use `text-neon-pink` regardless of hover state. Inactive links use `text-foreground` and `hover:text-neon-pink`.
+
+### Accessibility requirements
+
+| Requirement | Implementation |
+|-------------|----------------|
+| **Focus trap** | When drawer is open, Tab/Shift+Tab cycles only through drawer elements (X button → nav links → back to X). Focus returns to Nav Toggle when closed. |
+| **Scroll lock** | Apply `overflow-hidden` to `<body>` when drawer is open. Remove when closed. |
+| **Keyboard close** | Pressing Escape closes the drawer. |
+| **ARIA labels** | Nav Toggle button needs `aria-label="Toggle navigation"` and `aria-expanded={isOpen}`. |
+| **Focus management** | When drawer opens, focus moves to first interactive element (X button or first link). When closed, focus returns to Nav Toggle. |
+
+### Close mechanisms
+
+The drawer closes via:
+1. **X button tap** (Nav Toggle when in X state)
+2. **Backdrop tap** (anywhere outside drawer)
+3. **Nav link tap** (automatic close after navigation)
+4. **Escape key**
+
+All close actions should trigger the same close handler to ensure consistent state updates (drawer translate, backdrop fade, scroll unlock, focus return).
+
+### Z-index layer reference
+
+| Element | Z-index | Rationale |
+|---------|---------|-----------|
+| Page content | default | Base layer |
+| Header | `z-20` | Sticky, above content |
+| Backdrop | `z-40` | Above page, below drawer |
+| Nav Drawer | `z-50` | Highest UI layer |
