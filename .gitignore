@@ -22,4 +22,5 @@ node_modules/
 /playwright/.cache/
 
 # Stitch
-/stitch_minimalist_developer_portfoliotsconfig.tsbuildinfo
+/stitch_minimalist_developer_portfolio
+tsconfig.tsbuildinfo
