@@ -9,6 +9,7 @@ import {
 } from '@payloadcms/richtext-lexical/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { Button } from '@/components/ui/button'
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -55,14 +56,12 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({
       </div>
 
       {fileUrl && (
-        <a
-          href={fileUrl}
-          download
-          className="shrink-0 inline-flex items-center gap-3 bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 rounded transition-all duration-300 hover:brightness-110"
-        >
-          <FontAwesomeIcon icon={faDownload} className="w-5 h-5" aria-hidden="true" />
-          {downloadLabel ?? 'DOWNLOAD'}
-        </a>
+        <Button variant="primary" size="clear" asChild>
+          <a href={fileUrl} download className="shrink-0">
+            <FontAwesomeIcon icon={faDownload} className="w-5 h-5" aria-hidden="true" />
+            {downloadLabel ?? 'DOWNLOAD'}
+          </a>
+        </Button>
       )}
     </div>
   )
