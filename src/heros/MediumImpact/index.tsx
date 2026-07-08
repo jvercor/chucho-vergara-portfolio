@@ -7,6 +7,8 @@ import {
   JSXConvertersFunction,
   LinkJSXConverter,
 } from '@payloadcms/richtext-lexical/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -45,7 +47,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({
     downloadFile && typeof downloadFile === 'object' ? downloadFile.url ?? null : null
 
   return (
-    <div className="container flex flex-col md:flex-row justify-between items-end gap-12 mb-section-gap pt-16">
+    <div className="container flex flex-col md:flex-row justify-between items-center md:items-end gap-12 mb-section-gap pt-16">
       <div className="max-w-3xl">
         {richText && (
           <ConvertRichText converters={heroConverters} data={richText} className="max-w-none" />
