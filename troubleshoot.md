@@ -4,7 +4,41 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
-## `CREATE TYPE IF NOT EXISTS` causes migration syntax error
+## Schema push warns about NOT NULL data loss when adding a required field to a populated table
+
+**Date**: 2026-07-08
+**Symptom**: `pnpm dev` triggers an interactive schema push prompt:
+```
+Warnings detected during schema push:
+· You're about to add not-null category column without default value, which contains N items
+DATA LOSS WARNING: Possible data loss detected if schema is pushed.
+Accept warnings and push schema to database? › (y/N)
+```
+**Root cause**: A new field was added to a collection with `required: true`, which tells Payload to enforce `NOT NULL` at the DB level. If the collection already has rows, Postgres cannot add a `NOT NULL` column without a default value — the existing rows have no value to fill in.
+**Fix**: Set the field to `required: false` in the collection config so the DB column is created as nullable. Existing rows will receive `NULL` and must be updated manually via the admin panel. The form-level "required" behavior can still be enforced with a `validate` function if needed.
+```ts
+// ❌ Causes NOT NULL push warning on a populated table
+{ name: 'category', type: 'select', required: true, options: [...] }
+
+// ✅ Nullable at DB level — existing rows get NULL, admin updates them
+{ name: 'category', type: 'select', required: false, options: [...] }
+```
+**Answer to the prompt**: Press **N** (reject), update the collection to `required: false`, then restart `pnpm dev`. The push will succeed without the warning.
+
+---
+
+## `payload migrate:create` generates duplicate SQL when migration JSON snapshots are missing
+
+**Date**: 2026-07-08
+**Symptom**: A freshly generated migration file includes `CREATE TABLE` and `ALTER TABLE` statements that were already applied by earlier migrations (e.g., logo wall tables, hero column additions). Running the migration on the live DB would fail because those objects already exist.
+**Root cause**: Payload computes the migration diff by comparing the current schema config against its own JSON snapshot files (`.json` files alongside each `.ts` migration). Migrations created without a companion `.json` snapshot (e.g., manually written ones) are invisible to the diff engine — Payload treats the schema state as if those migrations never ran and re-emits their SQL.
+**Fix**: After running `pnpm payload migrate:create`, inspect the generated `up()` and manually remove any `CREATE TABLE`, `ALTER TABLE ADD COLUMN`, or `CREATE INDEX` statements that are already present in earlier migration files. Keep only the genuinely new changes.
+
+To reduce future risk: when writing migrations manually, also create or update the corresponding `.json` snapshot so Payload's diff engine stays in sync.
+
+---
+
+
 **Date**: 2026-06-01
 **Symptom**: Deployment fails during `pnpm run ci` / `payload migrate` with:
 ```
