@@ -60,9 +60,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({
           download
           className="shrink-0 inline-flex items-center gap-3 bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 rounded transition-all duration-300 hover:brightness-110"
         >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            download
-          </span>
+          <FontAwesomeIcon icon={faDownload} className="w-5 h-5" aria-hidden="true" />
           {downloadLabel ?? 'DOWNLOAD'}
         </a>
       )}
