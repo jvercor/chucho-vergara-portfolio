@@ -72,6 +72,10 @@ export interface Config {
     posts: Post;
     projects: Project;
     stack: Stack;
+    experience: Experience;
+    education: Education;
+    certifications: Certification;
+    languages: Language;
     media: Media;
     categories: Category;
     users: User;
@@ -96,6 +100,10 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     stack: StackSelect<false> | StackSelect<true>;
+    experience: ExperienceSelect<false> | ExperienceSelect<true>;
+    education: EducationSelect<false> | EducationSelect<true>;
+    certifications: CertificationsSelect<false> | CertificationsSelect<true>;
+    languages: LanguagesSelect<false> | LanguagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -705,6 +713,14 @@ export interface Project {
 export interface Stack {
   id: number;
   title: string;
+  /**
+   * Set the category so this item appears in the correct column of the Technical Stack section on the Resume page.
+   */
+  category?: ('programming-language' | 'framework' | 'infrastructure' | 'database') | null;
+  /**
+   * Optional descriptor shown below the name (e.g. "Fullstack", "ML Systems"). Most relevant for Frameworks.
+   */
+  subtitle?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -943,6 +959,106 @@ export interface LogoWallBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience".
+ */
+export interface Experience {
+  id: number;
+  company: string;
+  /**
+   * Optional link to the company website.
+   */
+  companyUrl?: string | null;
+  role: string;
+  startYear: number;
+  isCurrent?: boolean | null;
+  /**
+   * Leave empty if this is your current position.
+   */
+  endYear?: number | null;
+  bullets?:
+    | {
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Programming Languages, Frameworks, Infrastructure, and Databases used in this role.
+   */
+  stack?: (number | Stack)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "education".
+ */
+export interface Education {
+  id: number;
+  /**
+   * e.g. "M.S. Computer Science" or "B.S. Software Engineering"
+   */
+  title: string;
+  institution: string;
+  yearFrom: number;
+  isCurrent?: boolean | null;
+  /**
+   * Leave empty if currently enrolled.
+   */
+  yearTo?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certifications".
+ */
+export interface Certification {
+  id: number;
+  /**
+   * e.g. "AWS Certified Solutions Architect"
+   */
+  title: string;
+  /**
+   * e.g. "Amazon Web Services"
+   */
+  institution: string;
+  /**
+   * Optional descriptor shown below the institution (e.g. "Professional Level").
+   */
+  note?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "languages".
+ */
+export interface Language {
+  id: number;
+  /**
+   * e.g. "English", "Spanish"
+   */
+  title: string;
+  level: 'native' | 'fluent' | 'advanced' | 'intermediate' | 'basic';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1119,6 +1235,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'stack';
         value: number | Stack;
+      } | null)
+    | ({
+        relationTo: 'experience';
+        value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'education';
+        value: number | Education;
+      } | null)
+    | ({
+        relationTo: 'certifications';
+        value: number | Certification;
+      } | null)
+    | ({
+        relationTo: 'languages';
+        value: number | Language;
       } | null)
     | ({
         relationTo: 'media';
@@ -1439,6 +1571,63 @@ export interface ProjectsSelect<T extends boolean = true> {
  */
 export interface StackSelect<T extends boolean = true> {
   title?: T;
+  category?: T;
+  subtitle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience_select".
+ */
+export interface ExperienceSelect<T extends boolean = true> {
+  company?: T;
+  companyUrl?: T;
+  role?: T;
+  startYear?: T;
+  isCurrent?: T;
+  endYear?: T;
+  bullets?:
+    | T
+    | {
+        content?: T;
+        id?: T;
+      };
+  stack?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "education_select".
+ */
+export interface EducationSelect<T extends boolean = true> {
+  title?: T;
+  institution?: T;
+  yearFrom?: T;
+  isCurrent?: T;
+  yearTo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "certifications_select".
+ */
+export interface CertificationsSelect<T extends boolean = true> {
+  title?: T;
+  institution?: T;
+  note?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "languages_select".
+ */
+export interface LanguagesSelect<T extends boolean = true> {
+  title?: T;
+  level?: T;
   updatedAt?: T;
   createdAt?: T;
 }

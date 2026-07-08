@@ -5,6 +5,10 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { Certification } from './collections/Certification'
+import { Education } from './collections/Education'
+import { Experience } from './collections/Experience'
+import { Language } from './collections/Language'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -85,6 +89,10 @@ export default buildConfig({
     Posts,
     Projects,
     Stack,
+    Experience,
+    Education,
+    Certification,
+    Language,
     Media,
     Categories,
     Users,
