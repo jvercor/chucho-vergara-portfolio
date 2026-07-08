@@ -35,8 +35,16 @@ The date a Project went live publicly. Used to sort Projects chronologically. Di
 _Avoid_: Published at, created at, completed at
 
 **Stack**:
-A technology or tool entry managed as a Payload collection. Referenced by Projects as tags. Has a title only. Enables future reuse across Resume visuals and other site sections.
-_Avoid_: Technology, tag, skill (see Skill for resume entries)
+A technology or tool entry managed as a Payload collection. Referenced by Projects as tags and by Experience entries as related tech. Fields: title, optional subtitle (most relevant for Frameworks, e.g. "Fullstack"), and category (one of: programming-language, framework, infrastructure, database). The category field determines which column of the Technical Stack section the item appears in.
+_Avoid_: Technology, tag, skill
+
+**Programming Language**:
+A Stack entry with category `programming-language` (e.g., TypeScript, Rust, Go, Python). Displayed in the "Languages" column of the Technical Stack section on the Resume page.
+_Avoid_: Language (that term is reserved for spoken/human languages)
+
+**Technical Stack**:
+The Resume page section that aggregates all Stack items referenced by Experience entries, grouped by their category into four columns: Programming Languages, Frameworks & Libs, Infrastructure, Databases. Items are de-duplicated across Experience entries and ordered by recency — items from the most recent Experience (highest start year) appear first within each category column.
+_Avoid_: Skills section, tech grid, technology list
 
 **Post**:
 A blog entry written by the site owner. Distinct from a Project — a Post is editorial content, not a portfolio showcase.
@@ -65,19 +73,19 @@ _Avoid_: Overlay, modal background, scrim
 ### Resume content collections
 
 **Experience**:
-A professional history entry. Belongs to the Resume page. Has company, role, date range, and description.
+A professional history entry managed as a Payload collection. Fields: company name, optional company URL, role/job title, start year, end year (optional), isCurrent boolean (renders end year as "Present"), and rich-text bullet points (Lexical, inline formatting allowed). Also carries a has-many relationship to Stack items (the tech used in that role). Displayed sorted by start year descending.
 _Avoid_: Job, position, work history
 
 **Education**:
-An academic history entry. Belongs to the Resume page. Has institution, degree, field of study, and year.
+An academic history entry managed as a Payload collection. Fields: title (degree name, e.g. "M.S. Computer Science"), institution, yearFrom, yearTo, isCurrent boolean (for currently enrolled, renders yearTo as "Present"). Ordered by admin-defined sort in Payload.
 _Avoid_: School, degree entry
 
-**Skill**:
-A technical capability entry grouped by category (e.g., Frameworks, Tools). Belongs to the Resume page.
-_Avoid_: Technology, competency
+**Certification**:
+A credential or professional certificate managed as a Payload collection. Fields: title, institution, optional note (e.g. "Professional Level"). Ordered by admin-defined sort in Payload.
+_Avoid_: Certificate, award, badge
 
 **Language**:
-A spoken/human language entry with proficiency level (e.g., English — Native, Spanish — Fluent). Belongs to the Resume page.
+A spoken/human language entry with proficiency level. Belongs to the Resume page. Level is a fixed select: Native, Fluent, Advanced, Intermediate, Basic. Ordered by admin-defined sort in Payload.
 _Avoid_: Programming language, tongue
 
 ### Theme
