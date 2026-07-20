@@ -37,7 +37,7 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onClose, data, foc
         'fixed inset-y-0 right-0 w-[85vw] bg-background/90 backdrop-blur-sm border-l border-border z-50',
         'flex flex-col items-center justify-center gap-6',
         'transition-transform duration-300 ease-out',
-        isOpen ? 'translate-x-0' : 'translate-x-full',
+        isOpen ? 'translate-x-0 visible' : 'translate-x-full invisible',
       )}
     >
       {/* Close button (X) - positioned at top right */}
