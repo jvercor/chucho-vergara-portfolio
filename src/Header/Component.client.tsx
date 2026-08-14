@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
-import { Logo3D } from '@/components/Logo/Logo3D'
+import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 import { NavToggle } from './Nav/NavToggle'
 import { NavDrawer } from './Nav/NavDrawer'
@@ -49,7 +49,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       <div className="container">
         <div className="py-4 flex justify-between items-center">
           <Link href="/">
-            <Logo3D size={64} />
+            <Logo />
           </Link>
 
           {/* Desktop Nav - visible on md and up */}
