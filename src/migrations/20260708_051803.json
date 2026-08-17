@@ -12105,7 +12105,8 @@
         "highImpact",
         "mediumImpact",
         "lowImpact",
-        "homeHero"
+        "homeHero",
+        "terminalHero"
       ]
     },
     "public.enum_pages_status": {
@@ -12200,7 +12201,8 @@
         "highImpact",
         "mediumImpact",
         "lowImpact",
-        "homeHero"
+        "homeHero",
+        "terminalHero"
       ]
     },
     "public.enum__pages_v_version_status": {

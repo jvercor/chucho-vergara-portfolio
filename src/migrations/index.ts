@@ -7,6 +7,7 @@ import * as migration_20260607_223200_add_logo_wall_block from './20260607_22320
 import * as migration_20260608_180000_add_home_hero_fields from './20260608_180000_add_home_hero_fields';
 import * as migration_20260608_190000_add_home_hero_code_fields from './20260608_190000_add_home_hero_code_fields';
 import * as migration_20260708_051803 from './20260708_051803';
+import * as migration_20260817_000000_rename_home_hero_to_terminal_hero from './20260817_000000_rename_home_hero_to_terminal_hero';
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20260708_051803.up,
     down: migration_20260708_051803.down,
     name: '20260708_051803'
+  },
+  {
+    up: migration_20260817_000000_rename_home_hero_to_terminal_hero.up,
+    down: migration_20260817_000000_rename_home_hero_to_terminal_hero.down,
+    name: '20260817_000000_rename_home_hero_to_terminal_hero',
   },
 ];

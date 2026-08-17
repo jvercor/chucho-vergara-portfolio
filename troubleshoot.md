@@ -4,6 +4,57 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## `pnpm payload migrate` — "you've run Payload in dev mode" prompt is destructive — always answer N
+
+**Date**: 2026-08-17
+**Symptom**: Running `pnpm payload migrate` shows:
+```
+It looks like you've run Payload in dev mode, meaning you've dynamically pushed changes to your database.
+If you'd like to run migrations, data loss will occur. Would you like to proceed? › (y/N)
+```
+**Root cause**: This prompt appears when Payload detects a `dev` row (batch `-1`) in `payload_migrations` — a marker it inserts whenever the dev server applies a schema push. This is **not** a routine "run pending migrations" prompt. Answering `Y` causes Payload to wipe most migration tracking records and attempt to re-run all migrations from scratch, which fails immediately because the schema objects already exist.
+
+**What happens if you answer Y**:
+1. Payload deletes rows from `payload_migrations`, leaving only the earliest ones.
+2. It tries to re-run old migrations — `CREATE TYPE`, `CREATE TABLE` — which fail because those objects already exist.
+3. The schema push partially applies before erroring: some columns may be left as `text` instead of their proper enum type.
+4. The `dev` row is re-inserted on failure, so the prompt reappears on the next run.
+
+**Fix** (recovery after accidentally answering Y):
+1. Re-insert missing migration records manually:
+```sql
+INSERT INTO payload_migrations (name, batch) VALUES
+  ('20260528_092154_add_solid_button_appearance', 3),
+  ('20260601_214845_add_footer_social_links', 4),
+  ('20260602_190000_add_medium_impact_download_fields', 5),
+  ('20260607_223200_add_logo_wall_block', 6),
+  ('20260608_180000_add_home_hero_fields', 7),
+  ('20260608_190000_add_home_hero_code_fields', 8),
+  ('20260708_051803', 9)
+ON CONFLICT DO NOTHING;
+```
+2. Check for columns left as `text` that should be enums:
+```sql
+SELECT column_name, udt_name FROM information_schema.columns
+WHERE table_name IN ('pages', '_pages_v') AND udt_name = 'text'
+  AND column_name LIKE '%type%';
+```
+3. Fix any `text` columns by first updating the data, then re-casting:
+```sql
+UPDATE "_pages_v" SET "version_hero_type" = 'terminalHero' WHERE "version_hero_type" = 'homeHero';
+ALTER TABLE "_pages_v" ALTER COLUMN "version_hero_type"
+  SET DATA TYPE "public"."enum__pages_v_version_hero_type"
+  USING "version_hero_type"::"public"."enum__pages_v_version_hero_type";
+```
+4. Delete the `dev` row:
+```sql
+DELETE FROM payload_migrations WHERE name = 'dev';
+```
+
+**The correct answer is always N.** To apply a new migration when this prompt appears, apply the SQL directly via Docker and mark it applied manually — see the "Enum value added to code but missing from DB" entry for the pattern.
+
+---
+
 ## Schema push warns about NOT NULL data loss when adding a required field to a populated table
 
 **Date**: 2026-07-08
