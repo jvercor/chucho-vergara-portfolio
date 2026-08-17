@@ -4,7 +4,7 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 
-export const HomeHero: React.FC<Page['hero']> = ({
+export const TerminalHero: React.FC<Page['hero']> = ({
   badge,
   heading,
   tagline,

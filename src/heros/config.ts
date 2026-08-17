@@ -36,8 +36,8 @@ export const hero: Field = {
           value: 'lowImpact',
         },
         {
-          label: 'Home Hero',
-          value: 'homeHero',
+          label: 'Terminal Hero',
+          value: 'terminalHero',
         },
       ],
       required: true,
@@ -61,7 +61,7 @@ export const hero: Field = {
       name: 'badge',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Availability label shown above the heading (e.g. "Available for new opportunities").',
       },
     },
@@ -69,7 +69,7 @@ export const hero: Field = {
       name: 'heading',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Primary headline (e.g. "Jesus Vergara Cortes").',
       },
     },
@@ -77,7 +77,7 @@ export const hero: Field = {
       name: 'tagline',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Short subtitle below the heading (e.g. "Sr. Full-stack Engineer").',
       },
     },
@@ -85,7 +85,7 @@ export const hero: Field = {
       overrides: {
         maxRows: 2,
         admin: {
-          condition: (_, { type } = {}) => ['highImpact', 'homeHero'].includes(type),
+          condition: (_, { type } = {}) => ['highImpact', 'terminalHero'].includes(type),
         },
       },
     }),
@@ -120,7 +120,7 @@ export const hero: Field = {
       name: 'heroCode',
       type: 'code',
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Code snippet displayed in the terminal window on the right panel.',
         language: 'rust',
       },
@@ -129,7 +129,7 @@ export const hero: Field = {
       name: 'heroCodeFilename',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Filename shown in the terminal window header (e.g. "system_init.rs").',
       },
     },
@@ -139,7 +139,7 @@ export const hero: Field = {
       relationTo: 'media',
       required: false,
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Full-bleed background image for the right panel.',
       },
     },
@@ -149,7 +149,7 @@ export const hero: Field = {
       relationTo: 'media',
       required: false,
       admin: {
-        condition: (_, { type } = {}) => type === 'homeHero',
+        condition: (_, { type } = {}) => type === 'terminalHero',
         description: 'Floating card image overlaid on the right panel background.',
       },
     },

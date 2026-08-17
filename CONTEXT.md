@@ -120,9 +120,9 @@ _Avoid_: Frosted card, blur card
 A rendered segment of a Project's rich-text body content. When a `content` field contains an `h2` heading node, that heading and its following paragraph nodes are wrapped in a Glass Card. Each `h2` opens a new Narrative Card. Non-heading and non-paragraph nodes (blocks, h3/h4, horizontal rules, leading paragraphs) render outside any card as passthrough content.
 _Avoid_: Section card, content card
 
-**Hero**:
-The CMS-controlled full-screen section at the top of Home. Desktop layout: 50/50 split — text content on the left (availability badge, name h1, role tagline, two CTA links) and a full-bleed image panel on the right (background image with a floating foreground card on top). Mobile: stacked, image panel below text. Atmospheric glow blobs in the background. Uses adaptive CSS-var tokens for Dark and Light Theme. Distinct from Medium Impact Hero. Fields: `badge` (text), `heading` (text), `tagline` (text), `links` (up to 2 CTA links with appearance), `backgroundImage` (media), `foregroundImage` (media).
-_Avoid_: Banner, splash
+**Terminal Hero**:
+The CMS-controlled full-screen section at the top of Home. Desktop layout: 50/50 split — text content on the left (availability badge, name h1, role tagline, two CTA links) and a terminal code panel on the right (background image with a floating terminal window on top). Mobile: stacked, terminal panel below text. Atmospheric glow blobs in the background. Uses adaptive CSS-var tokens for Dark and Light Theme. Distinct from Medium Impact Hero. Fields: `badge` (text), `heading` (text), `tagline` (text), `links` (up to 2 CTA links with appearance), `backgroundImage` (media), `heroCode` (code snippet), `heroCodeFilename` (terminal window title). The terminal panel is always present.
+_Avoid_: Banner, splash, Home Hero
 
 **Medium Impact Hero**:
 A CMS-controlled hero variant for interior pages (e.g. Projects, Resume). Two-column layout on desktop: rich text (H1 + body paragraph) on the left, an optional download button on the right. Fields: `richText` (Lexical — editor writes H1 as the title and a paragraph as the tagline), `downloadFile` (Payload media upload, optional), and `downloadLabel` (text for the download button, optional). No image, no badge, no highlight word. Desktop alignment is `items-end` — the download button anchors to the bottom of the left text block.

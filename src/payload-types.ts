@@ -208,7 +208,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'homeHero';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'terminalHero';
     richText?: {
       root: {
         type: string;
