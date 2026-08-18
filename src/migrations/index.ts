@@ -9,6 +9,8 @@ import * as migration_20260608_190000_add_home_hero_code_fields from './20260608
 import * as migration_20260708_051803 from './20260708_051803';
 import * as migration_20260817_000000_rename_home_hero_to_terminal_hero from './20260817_000000_rename_home_hero_to_terminal_hero';
 
+import * as migration_20260817_000001_add_model_hero_type from './20260817_000001_add_model_hero_type';
+
 export const migrations = [
   {
     up: migration_20260409_155721_initial.up,
@@ -59,5 +61,10 @@ export const migrations = [
     up: migration_20260817_000000_rename_home_hero_to_terminal_hero.up,
     down: migration_20260817_000000_rename_home_hero_to_terminal_hero.down,
     name: '20260817_000000_rename_home_hero_to_terminal_hero',
+  },
+  {
+    up: migration_20260817_000001_add_model_hero_type.up,
+    down: migration_20260817_000001_add_model_hero_type.down,
+    name: '20260817_000001_add_model_hero_type',
   },
 ];
