@@ -208,7 +208,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'terminalHero';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'terminalHero' | 'modelHero';
     richText?: {
       root: {
         type: string;
@@ -281,6 +281,10 @@ export interface Page {
      * Full-bleed background image for the right panel.
      */
     backgroundImage?: (number | null) | Media;
+    /**
+     * Optimized background image for mobile viewports (replaces backgroundImage on small screens).
+     */
+    mobileBackgroundImage?: (number | null) | Media;
     /**
      * Floating card image overlaid on the right panel background.
      */
@@ -1367,6 +1371,7 @@ export interface PagesSelect<T extends boolean = true> {
         heroCode?: T;
         heroCodeFilename?: T;
         backgroundImage?: T;
+        mobileBackgroundImage?: T;
         foregroundImage?: T;
       };
   layout?:

@@ -39,6 +39,10 @@ export const hero: Field = {
           label: 'Terminal Hero',
           value: 'terminalHero',
         },
+        {
+          label: 'Model Hero',
+          value: 'modelHero',
+        },
       ],
       required: true,
     },
@@ -61,7 +65,7 @@ export const hero: Field = {
       name: 'badge',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'terminalHero',
+        condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
         description: 'Availability label shown above the heading (e.g. "Available for new opportunities").',
       },
     },
@@ -69,7 +73,7 @@ export const hero: Field = {
       name: 'heading',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'terminalHero',
+        condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
         description: 'Primary headline (e.g. "Jesus Vergara Cortes").',
       },
     },
@@ -77,7 +81,7 @@ export const hero: Field = {
       name: 'tagline',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => type === 'terminalHero',
+        condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
         description: 'Short subtitle below the heading (e.g. "Sr. Full-stack Engineer").',
       },
     },
@@ -85,7 +89,7 @@ export const hero: Field = {
       overrides: {
         maxRows: 2,
         admin: {
-          condition: (_, { type } = {}) => ['highImpact', 'terminalHero'].includes(type),
+          condition: (_, { type } = {}) => ['highImpact', 'terminalHero', 'modelHero'].includes(type),
         },
       },
     }),
@@ -139,8 +143,18 @@ export const hero: Field = {
       relationTo: 'media',
       required: false,
       admin: {
-        condition: (_, { type } = {}) => type === 'terminalHero',
+        condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
         description: 'Full-bleed background image for the right panel.',
+      },
+    },
+    {
+      name: 'mobileBackgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+      admin: {
+        condition: (_, { type } = {}) => type === 'modelHero',
+        description: 'Optimized background image for mobile viewports (replaces backgroundImage on small screens).',
       },
     },
     {
