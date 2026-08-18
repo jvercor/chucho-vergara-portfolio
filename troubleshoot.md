@@ -4,6 +4,21 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## Three.js `getBoundingClientRect()` returns zero height on mobile for flex children
+**Date**: 2026-08-17
+**Symptom**: A Three.js canvas component is invisible on mobile even though it renders fine on desktop. The renderer initialises with `width: 0, height: 0`.
+**Root cause**: `getBoundingClientRect()` is called in a `useEffect` at mount time. On mobile, the component's parent uses `min-height` (not an explicit `height`), so the browser hasn't resolved the container's pixel height yet — it returns `0`.
+**Fix**: Two layers: (1) give the container an explicit height on mobile (`h-[45vh]` instead of `min-h-[40vh]`) so `h-full` inside it resolves; (2) add a fallback in the component — `const height = rawHeight > 0 ? rawHeight : window.innerHeight * 0.45`.
+
+---
+
+## `window.innerWidth` vs container width for responsive breakpoints in canvas components
+**Date**: 2026-08-17
+**Symptom**: A breakpoint check (`width < 768`) inside a canvas component always evaluates as mobile on desktop, because `width` comes from `getBoundingClientRect()` on the canvas container — which is a `flex-1` half-column, not the full viewport.
+**Fix**: Use `window.innerWidth` (viewport width) for breakpoint checks, not the container's measured width.
+
+---
+
 ## `pnpm payload migrate` — "you've run Payload in dev mode" prompt is destructive — always answer N
 
 **Date**: 2026-08-17
