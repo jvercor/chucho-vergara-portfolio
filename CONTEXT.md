@@ -130,9 +130,13 @@ _Avoid_: Banner hero, section header
 
 
 
-**3D Scene**:
-Removed from the Hero. Previously a Three.js matcap-shaded GLB with mouse-tracking. May be reintroduced in a future section.
-_Avoid_: Spline scene, 3D model viewer
+**Model Viewer**:
+A responsive Three.js canvas component that fills its parent container. Loads `model.glb` with a matcap shader and tracks mouse movement to rotate the model. Distinct from `Logo3D` (which is fixed-px, square, for nav icon use). Model Viewer measures its container via `ResizeObserver` and feeds the renderer the real pixel dimensions. Used as the right panel of the Model Hero.
+_Avoid_: Logo3D, 3D canvas
+
+**Model Hero**:
+A full-screen hero variant for the Home page. Two equal columns (50/50) on desktop: the left column shares the same CMS fields as the Terminal Hero left panel (`badge`, `heading`, `tagline`, `links`); the right column shows the Model Viewer. Pulls under the header (same `-mt` treatment as High Impact Hero). The background image is a PNG/webp with baked-in transparency used as a texture overlay on top of `bg-background` — the site's dark surface shows through. No code-level opacity is applied. On mobile, panels stack vertically (text on top, Model Viewer below), text is left-aligned on both mobile and desktop, and the entire hero fits within one viewport height. Desktop and mobile each have their own CMS background image field (`backgroundImage`, `mobileBackgroundImage`) to allow separate optimized assets. The hero does not force a header theme — the nav adapts to the user's active theme. 
+_Avoid_: 3D hero, split hero
 
 **Identity Card**:
 Removed. Previously a frosted-glass card pinned to the bottom of the Hero. Replaced by the centered Hero content block.
