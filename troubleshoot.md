@@ -179,6 +179,23 @@ CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_folders_id_idx" ON "pa
 
 ---
 
+## `ALTER TYPE ADD VALUE` cannot be used in the same transaction as queries that reference the new value
+**Date**: 2026-08-17
+**Symptom**: Vercel build fails with `unsafe use of new value "<value>" of enum type <enum>` during `payload migrate`.
+**Root cause**: Payload wraps every migration file in a single database transaction (`initTransaction` → `commitTransaction`). PostgreSQL does not allow using a newly added enum value within the same transaction that added it — even across separate `db.execute` calls.
+**Fix**: Apply the `ALTER TYPE … ADD VALUE` statements manually on the Neon dashboard, mark the migration as already applied in `payload_migrations`, then make the migration file a no-op:
+1. Run on Neon SQL editor:
+   ```sql
+   ALTER TYPE "public"."<enum>" ADD VALUE IF NOT EXISTS '<value>';
+   INSERT INTO payload_migrations (name, batch) VALUES ('<migration_name>', 1);
+   ```
+2. Replace the migration `up()` and `down()` with empty functions and add a comment explaining they were applied manually.
+
+**Known occurrences**:
+- `terminalHero` and `modelHero` on `enum_pages_hero_type` / `enum__pages_v_version_hero_type` — migrations `20260817_000000_rename_home_hero_to_terminal_hero` and `20260817_000001_add_model_hero_type` both no-oped after manual application.
+
+---
+
 ## `slugField()` must not be spread in Payload v3 collections
 **Date**: 2026-05-28
 **Symptom**: Runtime error — "slugField is not a function or its return value is not iterable" when opening a collection entry in the admin panel.

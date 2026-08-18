@@ -1,10 +1,8 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
+import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db }: MigrateUpArgs): Promise<void> {
-  await db.execute(sql`ALTER TYPE "public"."enum_pages_hero_type" ADD VALUE IF NOT EXISTS 'modelHero'`)
-  await db.execute(sql`ALTER TYPE "public"."enum__pages_v_version_hero_type" ADD VALUE IF NOT EXISTS 'modelHero'`)
-}
+// Applied manually on Neon dashboard — ALTER TYPE cannot run inside a Payload
+// transaction and be used in the same transaction. Enum values were applied
+// directly via SQL on the live DB.
+export async function up(_args: MigrateUpArgs): Promise<void> {}
 
-export async function down(_args: MigrateDownArgs): Promise<void> {
-  // Postgres does not support removing enum values; no-op
-}
+export async function down(_args: MigrateDownArgs): Promise<void> {}
