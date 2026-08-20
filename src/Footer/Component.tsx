@@ -33,39 +33,55 @@ export async function Footer() {
 
   return (
     <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
-        <Link className="flex items-center" href="/">
-          <Logo variant="white" />
-        </Link>
+      <div className="container py-6">
+        {/* Main row: logo left, controls right */}
+        <div className="flex items-center justify-between gap-4">
+          <Link className="flex items-center" href="/">
+            <Logo variant="white" />
+          </Link>
 
-        <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
-          {socialLinks.length > 0 && (
-            <div className="flex flex-row gap-3 items-center">
-              {socialLinks.map(({ platform, url, id }) => {
-                const icon = SOCIAL_ICONS[platform]
-                if (!icon) return null
-                return (
-                  <a
-                    key={id}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={SOCIAL_LABELS[platform] ?? platform}
-                    className="text-white hover:opacity-70 transition-opacity duration-200"
-                  >
-                    <FontAwesomeIcon icon={icon} className="w-5 h-5" />
-                  </a>
-                )
-              })}
-            </div>
-          )}
-          <nav className="flex flex-col md:flex-row gap-4">
-            {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
-            })}
-          </nav>
-          <ThemeSelector />
+          <div className="flex items-center gap-4">
+            {navItems.length > 0 && (
+              <nav className="hidden md:flex flex-row gap-4">
+                {navItems.map(({ link }, i) => (
+                  <CMSLink className="text-white" key={i} {...link} />
+                ))}
+              </nav>
+            )}
+
+            {socialLinks.length > 0 && (
+              <div className="flex flex-row gap-3 items-center">
+                {socialLinks.map(({ platform, url, id }) => {
+                  const icon = SOCIAL_ICONS[platform]
+                  if (!icon) return null
+                  return (
+                    <a
+                      key={id}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={SOCIAL_LABELS[platform] ?? platform}
+                      className="text-white hover:opacity-70 transition-opacity duration-200"
+                    >
+                      <FontAwesomeIcon icon={icon} className="w-5 h-5" />
+                    </a>
+                  )
+                })}
+              </div>
+            )}
+
+            <ThemeSelector />
+          </div>
         </div>
+
+        {/* Mobile-only micro-strip: nav links */}
+        {navItems.length > 0 && (
+          <div className="mt-4 flex md:hidden flex-row flex-wrap justify-center gap-x-4 gap-y-1">
+            {navItems.map(({ link }, i) => (
+              <CMSLink className="text-white/70 text-xs" key={i} {...link} />
+            ))}
+          </div>
+        )}
       </div>
     </footer>
   )
