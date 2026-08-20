@@ -4,6 +4,28 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## `position: fixed` inside a `sticky` element with `backdrop-filter` breaks overlay positioning
+
+**Date**: 2026-08-20
+**Symptom**: Mobile nav drawer and backdrop show as a blank space (or are invisible) when the menu is opened after the user has scrolled down the page. Works correctly when opened at the top of the page (before scrolling).
+**Root cause**: CSS spec: `backdrop-filter` creates a new containing block for `position: fixed` descendants. The `<header>` uses `position: sticky` and conditionally applies `backdrop-blur-sm` when scrolled. Once `backdrop-blur-sm` is active, any `fixed` child (the drawer and backdrop) is positioned relative to the header's bounds, not the viewport — so they render clipped inside the header height rather than covering the full screen.
+
+This is a known CSS containment gotcha that affects any `fixed` element nested inside a parent with `backdrop-filter`, `transform`, `perspective`, `filter`, or `will-change: transform`.
+
+**Fix**: Render the overlay elements (`NavDrawer`, `Backdrop`) via `createPortal(el, document.body)` so they are appended directly to `<body>`, completely outside the sticky header's stacking context. A `mounted` guard prevents SSR hydration issues (portals require `document` to exist).
+
+```tsx
+// NavDrawer.tsx
+const [mounted, setMounted] = useState(false)
+useEffect(() => { setMounted(true) }, [])
+if (!mounted) return null
+return createPortal(drawer, document.body)
+```
+
+**Key lesson**: Any full-viewport overlay (`fixed inset-0`) that lives inside a scrolling sticky header with `backdrop-filter` must be portalled to `document.body`.
+
+---
+
 ## Three.js `getBoundingClientRect()` returns zero height on mobile for flex children
 **Date**: 2026-08-17
 **Symptom**: A Three.js canvas component is invisible on mobile even though it renders fine on desktop. The renderer initialises with `width: 0, height: 0`.

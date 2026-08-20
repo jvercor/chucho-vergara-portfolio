@@ -2,7 +2,8 @@
 
 import { cn } from '@/utilities/ui'
 import { usePathname } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -24,13 +25,18 @@ interface NavDrawerProps {
 export const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onClose, data, focusTrapRef }) => {
   const navItems = data?.navItems || []
   const pathname = usePathname()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleLinkClick = () => {
     // Close drawer after navigation
     onClose()
   }
 
-  return (
+  const drawer = (
     <div
       ref={focusTrapRef}
       className={cn(
@@ -71,4 +77,7 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onClose, data, foc
       </nav>
     </div>
   )
+
+  if (!mounted) return null
+  return createPortal(drawer, document.body)
 }
