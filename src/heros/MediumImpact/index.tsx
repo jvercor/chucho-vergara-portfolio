@@ -24,7 +24,7 @@ const heroConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConver
   heading: ({ node, nodesToJSX }) => {
     if (node.tag === 'h1') {
       return (
-        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground mb-6">
+        <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg bg-gradient-to-r from-foreground via-foreground to-neon-pink bg-clip-text text-transparent mb-6">
           {nodesToJSX({ nodes: node.children })}
         </h1>
       )
@@ -45,11 +45,11 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({
   downloadLabel,
 }) => {
   const fileUrl =
-    downloadFile && typeof downloadFile === 'object' ? downloadFile.url ?? null : null
+    downloadFile && typeof downloadFile === 'object' ? (downloadFile.url ?? null) : null
 
   return (
     <div className="container flex flex-col md:flex-row justify-between items-center md:items-end gap-12 mb-section-gap pt-16">
-      <div className="max-w-3xl">
+      <div className="w-full min-w-0 max-w-3xl">
         {richText && (
           <ConvertRichText converters={heroConverters} data={richText} className="max-w-none" />
         )}
