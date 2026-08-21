@@ -43,6 +43,16 @@ export const ModelViewer: React.FC<Props> = ({ onReady }) => {
         })
       })
 
+      const matcapMaterial = new THREE.MeshMatcapMaterial({ matcap })
+      // Flip matcap UV horizontally via shader patch — texture.repeat has no effect
+      // on MeshMatcapMaterial since it computes its own view-space UVs.
+      matcapMaterial.onBeforeCompile = (shader) => {
+        shader.fragmentShader = shader.fragmentShader.replace(
+          'vec2 uv = vec2( dot( x, normal ), dot( y, normal ) ) * 0.495 + 0.5;',
+          'vec2 uv = vec2( -dot( x, normal ), dot( y, normal ) ) * 0.495 + 0.5;',
+        )
+      }
+
       const loader = new GLTFLoader()
       const gltf = await new Promise<{ scene: Group }>((resolve, reject) => {
         loader.load('/model.glb', resolve as never, undefined, reject)
@@ -53,7 +63,7 @@ export const ModelViewer: React.FC<Props> = ({ onReady }) => {
       const model = gltf.scene
       model.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          child.material = new THREE.MeshMatcapMaterial({ matcap })
+          child.material = matcapMaterial
         }
       })
 
