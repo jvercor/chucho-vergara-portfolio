@@ -53,41 +53,43 @@ export const ModelHero: React.FC<Page['hero']> = ({
         </div>
       )}
 
-      {/* Left panel — text content */}
-      <div className="relative z-10 container flex flex-col lg:flex-row items-center h-full pt-[10.4rem] pb-8 lg:pb-16 gap-8 lg:gap-16">
-        <div className="flex-1 space-y-6 pt-8 lg:pt-0">
-          {badge && (
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5">
-              <span
-                className="w-2 h-2 rounded-full bg-neon-pink animate-pulse"
-                aria-hidden="true"
-              />
-              <span className="font-label-caps text-[10px] uppercase tracking-widest text-primary">
-                {badge}
-              </span>
-            </div>
-          )}
+      {/* Full-bleed canvas — fills the entire hero at every breakpoint */}
+      <div className="absolute inset-0">
+        <ModelViewer onReady={handleModelReady} />
+      </div>
 
-          {heading && (
-            <h1 className="text-headline-lg md:text-headline-xl bg-gradient-to-r from-foreground via-foreground to-neon-pink bg-clip-text text-transparent">
-              {heading}
-            </h1>
-          )}
+      {/* Text overlay — absolutely positioned over the canvas, left-aligned */}
+      <div className="absolute inset-0 pt-[10.4rem] z-10 pointer-events-none">
+        <div className="container h-full flex flex-col justify-start lg:justify-center pb-8 lg:pb-16">
+          <div className="max-w-md space-y-6 pointer-events-auto pt-8 lg:pt-0">
+            {badge && (
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5">
+                <span
+                  className="w-2 h-2 rounded-full bg-neon-pink animate-pulse"
+                  aria-hidden="true"
+                />
+                <span className="font-label-caps text-[10px] uppercase tracking-widest text-primary">
+                  {badge}
+                </span>
+              </div>
+            )}
 
-          {tagline && <p className="text-body-lg text-muted-foreground">{tagline}</p>}
+            {heading && (
+              <h1 className="text-headline-lg md:text-headline-xl bg-gradient-to-r from-foreground via-foreground to-neon-pink bg-clip-text text-transparent">
+                {heading}
+              </h1>
+            )}
 
-          {Array.isArray(links) && links.length > 0 && (
-            <div className="flex flex-row items-start gap-4 pt-2">
-              {links.map(({ link }, i) => (
-                <CMSLink key={i} {...link} />
-              ))}
-            </div>
-          )}
-        </div>
+            {tagline && <p className="text-body-lg text-muted-foreground">{tagline}</p>}
 
-        {/* Right panel — 3D model */}
-        <div className="flex-1 w-full h-[45vh] lg:h-auto lg:self-stretch">
-          <ModelViewer onReady={handleModelReady} />
+            {Array.isArray(links) && links.length > 0 && (
+              <div className="flex flex-row items-start gap-4 pt-2">
+                {links.map(({ link }, i) => (
+                  <CMSLink key={i} {...link} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
