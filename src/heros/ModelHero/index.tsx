@@ -28,7 +28,7 @@ export const ModelHero: React.FC<Page['hero']> = ({
   return (
     <>
       <PageLoader ready={ready} />
-      <div className="relative -mt-[10.4rem]">
+      <div className="relative -mt-[10.4rem] h-[calc(100svh+10.4rem)]">
       {/* Background texture — desktop */}
       {backgroundImage && typeof backgroundImage === 'object' && (
         <div className="absolute inset-0 lg:block hidden -z-10">
@@ -54,7 +54,7 @@ export const ModelHero: React.FC<Page['hero']> = ({
       )}
 
       {/* Left panel — text content */}
-      <div className="relative z-10 container flex flex-col lg:flex-row items-center min-h-screen pt-[10.4rem] pb-8 lg:pb-16 gap-8 lg:gap-16">
+      <div className="relative z-10 container flex flex-col lg:flex-row items-center h-full pt-[10.4rem] pb-8 lg:pb-16 gap-8 lg:gap-16">
         <div className="flex-1 space-y-6 pt-8 lg:pt-0">
           {badge && (
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5">
