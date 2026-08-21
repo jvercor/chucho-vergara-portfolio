@@ -1,11 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 
 import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { ModelViewer } from '@/components/ModelViewer'
+import { PageLoader } from '@/components/PageLoader'
 
 export const ModelHero: React.FC<Page['hero']> = ({
   badge,
@@ -15,12 +16,23 @@ export const ModelHero: React.FC<Page['hero']> = ({
   backgroundImage,
   mobileBackgroundImage,
 }) => {
+  const hasBg = !!(backgroundImage && typeof backgroundImage === 'object')
+  const [bgLoaded, setBgLoaded] = useState(!hasBg)
+  const [modelReady, setModelReady] = useState(false)
+
+  const handleBgLoad = useCallback(() => setBgLoaded(true), [])
+  const handleModelReady = useCallback(() => setModelReady(true), [])
+
+  const ready = bgLoaded && modelReady
+
   return (
-    <div className="relative -mt-[10.4rem]">
+    <>
+      <PageLoader ready={ready} />
+      <div className="relative -mt-[10.4rem]">
       {/* Background texture — desktop */}
       {backgroundImage && typeof backgroundImage === 'object' && (
         <div className="absolute inset-0 lg:block hidden -z-10">
-          <Media fill imgClassName="object-contain object-center" priority resource={backgroundImage} />
+          <Media fill imgClassName="object-contain object-center" priority resource={backgroundImage} onLoad={handleBgLoad} />
         </div>
       )}
       {/* Background texture — mobile */}
@@ -75,9 +87,10 @@ export const ModelHero: React.FC<Page['hero']> = ({
 
         {/* Right panel — 3D model */}
         <div className="flex-1 w-full h-[45vh] lg:h-auto lg:self-stretch">
-          <ModelViewer />
+          <ModelViewer onReady={handleModelReady} />
         </div>
       </div>
     </div>
+    </>
   )
 }

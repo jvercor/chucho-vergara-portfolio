@@ -3,7 +3,11 @@
 import type { Group, Texture, WebGLRenderer } from 'three'
 import React, { useEffect, useRef } from 'react'
 
-export const ModelViewer: React.FC = () => {
+interface Props {
+  onReady?: () => void
+}
+
+export const ModelViewer: React.FC<Props> = ({ onReady }) => {
   const mountRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -53,6 +57,7 @@ export const ModelViewer: React.FC = () => {
         }
       })
 
+      onReady?.()
       const box = new THREE.Box3().setFromObject(model)
       const center = box.getCenter(new THREE.Vector3())
       const modelSize = box.getSize(new THREE.Vector3())

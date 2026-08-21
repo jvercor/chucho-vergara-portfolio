@@ -56,6 +56,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     size: sizeFromProps,
     src: srcFromProps,
     loading: loadingFromProps,
+    onLoad,
   } = props
 
   let width: number | undefined
@@ -96,6 +97,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         priority={priority}
         quality={100}
         loading={loading}
+        onLoad={onLoad}
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}
