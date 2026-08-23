@@ -66,25 +66,50 @@ After you click the `Deploy` button above, you'll want to have standalone copy o
 ### Development
 
 1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `POSTGRES_URL` and `BLOB_READ_WRITE_TOKEN` from your Vercel project to your `.env` if you want to use Vercel Blob and the Neon database that was created for you.
+2. `cd my-project && cp .env.example .env` to copy the example environment variables.
 
    > _NOTE: If the connection string value includes `localhost` or `127.0.0.1`, the code will automatically use a normal postgres adapter instead of Vercel._. You can override this functionality by setting `forceUseVercelPostgres: true` if desired.
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+3. Choose a database:
+   - **Vercel/Neon:** add the `POSTGRES_URL` and `BLOB_READ_WRITE_TOKEN` from your Vercel project to `.env`.
+   - **Local Docker:** follow [Local Postgres with Docker](#local-postgres-with-docker).
+4. Run `pnpm install && pnpm dev` to install dependencies and start the dev server.
+5. Open `http://localhost:3000` in your browser.
 
 That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
 
-#### Docker (Optional)
+#### Local Postgres with Docker
 
-If you prefer to use Docker for local development instead of a local Postgres instance, the provided docker-compose.yml file can be used.
+Use the provided Compose service when you want a local PostgreSQL database instead of Vercel/Neon:
 
-To do so, follow these steps:
+1. Set this exact value in `.env`. Do not include `POSTGRES_URL=` a second time inside the value:
 
-- Modify the `POSTGRES_URL` in your `.env` file to `postgres://postgres@localhost:54320/<dbname>`
-- Modify the `docker-compose.yml` file's `POSTGRES_DB` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+   ```dotenv
+   POSTGRES_URL=postgres://postgres@localhost:54320/your-database-name
+   ```
 
+   The database name must match `POSTGRES_DB` in `docker-compose.yml`.
+2. Start PostgreSQL in the background:
+
+   ```bash
+   docker compose up -d postgres
+   ```
+
+3. On a new or empty local database, create the Payload schema:
+
+   ```bash
+   pnpm payload migrate
+   ```
+
+4. Start the application:
+
+   ```bash
+   pnpm dev
+   ```
+
+The Docker container is the database; it is not a separate application database. Leave it running while developing. Use `docker compose stop postgres` only when you want to pause local database access. Avoid `docker compose down -v` unless you intentionally want to remove local database data.
+
+If you change `.env` while `pnpm dev` is running, restart the development server so it reads the new connection string.
 ## How it works
 
 The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
@@ -246,16 +271,6 @@ pnpm payload migrate
 ```
 
 This command will check for any migrations that have not yet been run and try to run them and it will keep a record of migrations that have been run in the database.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
 
 ### Seed
 
