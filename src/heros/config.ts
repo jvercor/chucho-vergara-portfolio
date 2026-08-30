@@ -65,7 +65,7 @@ export const hero: Field = {
       name: 'badge',
       type: 'text',
       admin: {
-        condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
+        condition: (_, { type } = {}) => type === 'modelHero',
         description: 'Availability label shown above the heading (e.g. "Available for new opportunities").',
       },
     },
@@ -74,7 +74,8 @@ export const hero: Field = {
       type: 'text',
       admin: {
         condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
-        description: 'Primary headline (e.g. "Jesus Vergara Cortes").',
+        description:
+          'Primary headline. On Model Hero: the person\'s name (e.g. "Jesus Vergara Cortes"). On Terminal Hero: an About-page framing statement, not the name (e.g. "The engineer behind the code").',
       },
     },
     {
@@ -82,14 +83,15 @@ export const hero: Field = {
       type: 'text',
       admin: {
         condition: (_, { type } = {}) => ['terminalHero', 'modelHero'].includes(type),
-        description: 'Short subtitle below the heading (e.g. "Sr. Full-stack Engineer").',
+        description:
+          'Short supporting line below the heading. On Model Hero: role tagline (e.g. "Sr. Full-stack Engineer"). On Terminal Hero: a sentence elaborating the heading statement.',
       },
     },
     linkGroup({
       overrides: {
         maxRows: 2,
         admin: {
-          condition: (_, { type } = {}) => ['highImpact', 'terminalHero', 'modelHero'].includes(type),
+          condition: (_, { type } = {}) => ['highImpact', 'modelHero'].includes(type),
         },
       },
     }),

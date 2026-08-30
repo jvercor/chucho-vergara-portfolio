@@ -1,50 +1,27 @@
 import React from 'react'
 
 import type { Page } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 
 export const TerminalHero: React.FC<Page['hero']> = ({
-  badge,
   heading,
   tagline,
-  links,
   backgroundImage,
   heroCode,
   heroCodeFilename,
 }) => {
   return (
     <section className="container py-[15px] lg:py-section-gap">
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-16 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left panel — text content */}
         <div className="space-y-6 text-center lg:text-left">
-          {badge && (
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5">
-              <span
-                className="w-2 h-2 rounded-full bg-neon-pink animate-pulse"
-                aria-hidden="true"
-              />
-              <span className="font-label-caps text-[10px] uppercase tracking-widest text-primary">
-                {badge}
-              </span>
-            </div>
-          )}
-
           {heading && (
-            <h1 className="text-headline-lg-mobile md:text-headline-xl text-foreground">
+            <h1 className="text-headline-lg-mobile md:text-headline-xl bg-gradient-to-r from-foreground via-foreground to-neon-pink bg-clip-text text-transparent">
               {heading}
             </h1>
           )}
 
           {tagline && <p className="text-body-lg text-muted-foreground">{tagline}</p>}
-
-          {Array.isArray(links) && links.length > 0 && (
-            <div className="flex flex-row items-start justify-center lg:justify-start gap-4 pt-2">
-              {links.map(({ link }, i) => (
-                <CMSLink key={i} {...link} />
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Right panel */}
@@ -57,7 +34,7 @@ export const TerminalHero: React.FC<Page['hero']> = ({
           )}
 
           {/* Terminal window — hardcoded shell, CMS-editable code */}
-          <div className="absolute inset-0 flex items-center justify-center lg:justify-end p-4 md:p-6">
+          <div className="absolute inset-0 flex items-center justify-center p-4 md:p-6">
             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden w-full lg:max-w-[85%] shadow-2xl">
               {/* Title bar */}
               <div className="bg-surface-container px-3 py-1.5 md:px-4 md:py-2 flex items-center justify-between border-b border-outline-variant">

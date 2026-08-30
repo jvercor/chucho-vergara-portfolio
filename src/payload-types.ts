@@ -229,11 +229,11 @@ export interface Page {
      */
     badge?: string | null;
     /**
-     * Primary headline (e.g. "Jesus Vergara Cortes").
+     * Primary headline. On Model Hero: the person's name (e.g. "Jesus Vergara Cortes"). On Terminal Hero: an About-page framing statement, not the name (e.g. "The engineer behind the code").
      */
     heading?: string | null;
     /**
-     * Short subtitle below the heading (e.g. "Sr. Full-stack Engineer").
+     * Short supporting line below the heading. On Model Hero: role tagline (e.g. "Sr. Full-stack Engineer"). On Terminal Hero: a sentence elaborating the heading statement.
      */
     tagline?: string | null;
     links?:

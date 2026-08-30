@@ -121,7 +121,7 @@ A rendered segment of a Project's rich-text body content. When a `content` field
 _Avoid_: Section card, content card
 
 **Terminal Hero**:
-The CMS-controlled full-screen section at the top of Home. Desktop layout: 50/50 split — text content on the left (availability badge, name h1, role tagline, two CTA links) and a terminal code panel on the right (background image with a floating terminal window on top). Mobile: stacked, terminal panel below text. Atmospheric glow blobs in the background. Uses adaptive CSS-var tokens for Dark and Light Theme. Distinct from Medium Impact Hero. Fields: `badge` (text), `heading` (text), `tagline` (text), `links` (up to 2 CTA links with appearance), `backgroundImage` (media), `heroCode` (code snippet), `heroCodeFilename` (terminal window title). The terminal panel is always present.
+The CMS-controlled hero used at the top of the About page. Desktop layout: 50/50 split — text content on the left and a terminal code panel on the right (background image with a floating terminal window on top, showing CMS-editable code/ASCII art). Mobile: stacked, terminal panel below text. Distinct from Model Hero (Home's hero) — intentionally less visually dominant, since the About page is about the person, not a showcase. Left side is deliberately minimal: no availability badge, no CTA links, no name/role byline (identity is established elsewhere on the page/site). Fields: `heading` (text — an About-specific framing statement, not the person's name), `tagline` (text — a single supporting sentence elaborating the heading), `backgroundImage` (media), `heroCode` (code snippet), `heroCodeFilename` (terminal window title). The terminal panel is always present.
 _Avoid_: Banner, splash, Home Hero
 
 **Medium Impact Hero**:
