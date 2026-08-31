@@ -300,6 +300,7 @@ export interface Page {
     | FeaturedProjectsBlock
     | FormBlock
     | LogoWallBlock
+    | TravelGlobeBlock
   )[];
   meta?: {
     title?: string | null;
@@ -965,6 +966,291 @@ export interface LogoWallBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TravelGlobeBlock".
+ */
+export interface TravelGlobeBlock {
+  /**
+   * Short heading above the intro text (e.g. "Everywhere I've Been").
+   */
+  heading: string;
+  /**
+   * Supporting text next to the globe.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Each entry places a photo card on the globe over the selected country.
+   */
+  travels?:
+    | {
+        country:
+          | 'AFG'
+          | 'ALB'
+          | 'DZA'
+          | 'ASM'
+          | 'AND'
+          | 'AGO'
+          | 'AIA'
+          | 'ATA'
+          | 'ATG'
+          | 'ARG'
+          | 'ARM'
+          | 'ABW'
+          | 'AUS'
+          | 'AUT'
+          | 'AZE'
+          | 'BHS'
+          | 'BHR'
+          | 'BGD'
+          | 'BRB'
+          | 'BLR'
+          | 'BEL'
+          | 'BLZ'
+          | 'BEN'
+          | 'BMU'
+          | 'BTN'
+          | 'BOL'
+          | 'BIH'
+          | 'BWA'
+          | 'BVT'
+          | 'BRA'
+          | 'IOT'
+          | 'BRN'
+          | 'BGR'
+          | 'BFA'
+          | 'BDI'
+          | 'KHM'
+          | 'CMR'
+          | 'CAN'
+          | 'CPV'
+          | 'CYM'
+          | 'CAF'
+          | 'TCD'
+          | 'CHL'
+          | 'CHN'
+          | 'CXR'
+          | 'CCK'
+          | 'COL'
+          | 'COM'
+          | 'COG'
+          | 'COK'
+          | 'CRI'
+          | 'HRV'
+          | 'CUB'
+          | 'CYP'
+          | 'CZE'
+          | 'COD'
+          | 'DNK'
+          | 'DJI'
+          | 'DMA'
+          | 'DOM'
+          | 'ECU'
+          | 'EGY'
+          | 'SLV'
+          | 'GNQ'
+          | 'ERI'
+          | 'EST'
+          | 'SWZ'
+          | 'ETH'
+          | 'FLK'
+          | 'FRO'
+          | 'FJI'
+          | 'FIN'
+          | 'FRA'
+          | 'GUF'
+          | 'PYF'
+          | 'ATF'
+          | 'GAB'
+          | 'GMB'
+          | 'GEO'
+          | 'DEU'
+          | 'GHA'
+          | 'GIB'
+          | 'GRC'
+          | 'GRL'
+          | 'GRD'
+          | 'GLP'
+          | 'GUM'
+          | 'GTM'
+          | 'GGY'
+          | 'GIN'
+          | 'GNB'
+          | 'GUY'
+          | 'HTI'
+          | 'HAWAII'
+          | 'HMD'
+          | 'VAT'
+          | 'HND'
+          | 'HKG'
+          | 'HUN'
+          | 'ISL'
+          | 'IND'
+          | 'IDN'
+          | 'IRN'
+          | 'IRQ'
+          | 'IRL'
+          | 'IMN'
+          | 'ISR'
+          | 'ITA'
+          | 'CIV'
+          | 'JAM'
+          | 'JPN'
+          | 'JEY'
+          | 'JOR'
+          | 'KAZ'
+          | 'KEN'
+          | 'KIR'
+          | 'KWT'
+          | 'KGZ'
+          | 'LAO'
+          | 'LVA'
+          | 'LBN'
+          | 'LSO'
+          | 'LBR'
+          | 'LBY'
+          | 'LIE'
+          | 'LTU'
+          | 'LUX'
+          | 'MAC'
+          | 'MDG'
+          | 'MWI'
+          | 'MYS'
+          | 'MDV'
+          | 'MLI'
+          | 'MLT'
+          | 'MHL'
+          | 'MTQ'
+          | 'MRT'
+          | 'MUS'
+          | 'MYT'
+          | 'MEX'
+          | 'FSM'
+          | 'MDA'
+          | 'MCO'
+          | 'MNG'
+          | 'MNE'
+          | 'MSR'
+          | 'MAR'
+          | 'MOZ'
+          | 'MMR'
+          | 'NAM'
+          | 'NRU'
+          | 'NPL'
+          | 'NLD'
+          | 'NCL'
+          | 'NZL'
+          | 'NIC'
+          | 'NER'
+          | 'NGA'
+          | 'NIU'
+          | 'NFK'
+          | 'PRK'
+          | 'MKD'
+          | 'MNP'
+          | 'NOR'
+          | 'OMN'
+          | 'PAK'
+          | 'PLW'
+          | 'PSE'
+          | 'PAN'
+          | 'PNG'
+          | 'PRY'
+          | 'PER'
+          | 'PHL'
+          | 'PCN'
+          | 'POL'
+          | 'PRT'
+          | 'PRI'
+          | 'QAT'
+          | 'ROU'
+          | 'RUS'
+          | 'RWA'
+          | 'REU'
+          | 'SHN'
+          | 'KNA'
+          | 'LCA'
+          | 'SPM'
+          | 'VCT'
+          | 'WSM'
+          | 'SMR'
+          | 'STP'
+          | 'SAU'
+          | 'SEN'
+          | 'SRB'
+          | 'SYC'
+          | 'SLE'
+          | 'SGP'
+          | 'SVK'
+          | 'SVN'
+          | 'SLB'
+          | 'SOM'
+          | 'ZAF'
+          | 'SGS'
+          | 'KOR'
+          | 'SSD'
+          | 'ESP'
+          | 'LKA'
+          | 'SDN'
+          | 'SUR'
+          | 'SJM'
+          | 'SWE'
+          | 'CHE'
+          | 'SYR'
+          | 'TWN'
+          | 'TJK'
+          | 'TZA'
+          | 'THA'
+          | 'TLS'
+          | 'TGO'
+          | 'TKL'
+          | 'TON'
+          | 'TTO'
+          | 'TUN'
+          | 'TUR'
+          | 'TKM'
+          | 'TCA'
+          | 'TUV'
+          | 'UGA'
+          | 'UKR'
+          | 'ARE'
+          | 'GBR'
+          | 'USA'
+          | 'UMI'
+          | 'URY'
+          | 'UZB'
+          | 'VUT'
+          | 'VEN'
+          | 'VNM'
+          | 'VGB'
+          | 'VIR'
+          | 'WLF'
+          | 'ESH'
+          | 'YEM'
+          | 'ZMB'
+          | 'ZWE';
+        photo: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'travelGlobe';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experience".
  */
 export interface Experience {
@@ -1432,6 +1718,7 @@ export interface PagesSelect<T extends boolean = true> {
         featuredProjects?: T | FeaturedProjectsBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         logoWall?: T | LogoWallBlockSelect<T>;
+        travelGlobe?: T | TravelGlobeBlockSelect<T>;
       };
   meta?:
     | T
@@ -1555,6 +1842,23 @@ export interface LogoWallBlockSelect<T extends boolean = true> {
     | {
         label?: T;
         svg?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TravelGlobeBlock_select".
+ */
+export interface TravelGlobeBlockSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  travels?:
+    | T
+    | {
+        country?: T;
+        photo?: T;
         id?: T;
       };
   id?: T;

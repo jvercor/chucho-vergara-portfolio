@@ -9,6 +9,7 @@ import { FeaturedProjectsBlock } from '@/blocks/FeaturedProjects/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { LogoWallBlock } from '@/blocks/LogoWall/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { TravelGlobeBlock } from '@/blocks/TravelGlobe/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -18,6 +19,7 @@ const blockComponents = {
   formBlock: FormBlock,
   logoWall: LogoWallBlock,
   mediaBlock: MediaBlock,
+  travelGlobe: TravelGlobeBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -118,6 +118,10 @@ _Avoid_: CSS variables, Tailwind defaults
 A CMS-controlled block that displays a horizontal row of technology or brand logos. Each entry has a label and an inline SVG (raw markup, pasted by the editor). SVGs are provided as gray-filled assets. At rest they render gray; on hover they turn white in Dark Theme and black in Light Theme via CSS filter (`brightness(0) invert(1)` / `brightness(0)`). Usable on any Page via the layout field. Generic — not restricted to tech stack; can showcase clients, partners, or tools.
 _Avoid_: FavoriteStack, StackShowcase, tech logos section
 
+**Travel Globe**:
+A CMS-controlled block for the About page showing a rotating COBE-rendered globe with a photo Glass Card floating over each visited country marker as it faces the viewer, fading in/out with rotation. Two-column layout: `heading` (text) + `body` (richText) on the left, globe on the right; stacks text-above/globe-below on mobile. Editors add rows of `{ country, photo }` — country is picked from a fixed list with bundled lat/lng coordinates, not typed manually. Auto-rotates continuously; not draggable. No arcs — represents visited countries, not routes between them. Placed as a trailing block (via the companion `Pages` doc's layout field) after the Journey Timeline. Distinct from Journey Phases (career/life chapters) and Client Location (Project metadata) — this is personal travel/tourism history only.
+_Avoid_: World map, travel map, photo globe
+
 ### Visual / interaction
 
 **Glass Card**:
