@@ -4,6 +4,20 @@ Running log of issues encountered during development, with root cause and resolu
 
 ---
 
+## New Payload block shipped without its migration — production 500s despite a successful build
+**Date**: 2026-08-31
+**Symptom**: After pushing a commit adding a new block (Travel Globe), the Vercel build succeeded and deployed to Production, but the live site returned `500` on every page. Runtime logs (`vercel logs <domain>`) showed `Error: Failed query ... relation "pages_blocks_travel_globe" does not exist`.
+**Root cause**: The new block was added to the `Pages` collection config (`src/blocks/TravelGlobe/config.ts`), but no migration was generated for it, so the corresponding Postgres tables/enums were never created. `next build` only compiles the app — it does not check the migration files or the config against the live schema — so the build reports success while the DB is out of sync.
+**Fix**:
+1. Confirm the failing relation from runtime logs: `vercel logs <production-domain>`.
+2. Link the local repo and pull the production DB env: `vercel link`, `vercel env pull .env.production.local`.
+3. Diff the current schema against the generated one and create the missing migration: `set -a && source .env.production.local && set +a && npx payload migrate:create <name>`.
+4. Review the generated SQL (should be additive only — `CREATE TYPE`/`CREATE TABLE`, no drops), then apply it directly to production to restore the site immediately: `npx payload migrate`.
+5. Commit the generated migration files (`.ts` + `.json`) and the updated `src/migrations/index.ts` so future deploys stay in sync.
+**Key lesson**: Any PR that adds/changes a Payload collection or block field must include `pnpm payload migrate:create <name>` and commit the resulting migration in the same change — a successful Vercel build is not proof the database schema matches the code.
+
+---
+
 ## `position: fixed` inside a `sticky` element with `backdrop-filter` breaks overlay positioning
 
 **Date**: 2026-08-20
