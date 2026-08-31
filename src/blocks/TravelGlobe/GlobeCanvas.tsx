@@ -73,6 +73,9 @@ export const GlobeCanvas: React.FC<Props> = ({ travels }) => {
     let globe: { update: (state: Record<string, unknown>) => void; destroy: () => void } | undefined
     let phi = 0
     let width = 0
+    // Clamp DPR to 2 — cobe internally does `canvas.width = width * devicePixelRatio`,
+    // so requesting anything higher just quadratic-scales GPU cost with no visible gain.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
 
     const container = containerRef.current
     const canvas = canvasRef.current
@@ -80,6 +83,7 @@ export const GlobeCanvas: React.FC<Props> = ({ travels }) => {
 
     const onResize = () => {
       width = container.offsetWidth
+      globe?.update({ width: width * dpr, height: width * dpr })
     }
     window.addEventListener('resize', onResize)
     onResize()
@@ -87,6 +91,9 @@ export const GlobeCanvas: React.FC<Props> = ({ travels }) => {
     const points = travels.map((t) => ({ id: t.id, vec: latLonToVector3(t.lat, t.lon) }))
 
     let frameId: number
+    // Pause the render loop entirely while the globe is scrolled off-screen so the
+    // GPU/CPU aren't kept busy re-drawing something the user can't see.
+    let isVisible = true
 
     const init = async () => {
       const { default: createGlobe } = await import('cobe')
@@ -94,9 +101,13 @@ export const GlobeCanvas: React.FC<Props> = ({ travels }) => {
       if (destroyed || !canvas) return
 
       globe = createGlobe(canvas, {
-        devicePixelRatio: 2,
-        width: width * 2,
-        height: width * 2,
+        // NOTE: `width`/`height` here are already the final physical pixel size
+        // (CSS width * dpr) — do NOT also multiply by 2, cobe multiplies internally
+        // by `devicePixelRatio` again, which previously produced a 4x-oversized
+        // (16x the pixel count) render target and needlessly taxed the GPU every frame.
+        devicePixelRatio: dpr,
+        width: width * dpr,
+        height: width * dpr,
         phi: 0,
         theta: THETA,
         dark: 1,
@@ -115,32 +126,49 @@ export const GlobeCanvas: React.FC<Props> = ({ travels }) => {
         })),
       })
 
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry?.isIntersecting ?? true
+        },
+        { threshold: 0 },
+      )
+      observer.observe(container)
+
       // Auto-rotates the globe continuously; no drag interaction.
       const animate = () => {
-        phi += 0.003
-        globe?.update({ phi, width: width * 2, height: width * 2 })
+        if (isVisible) {
+          phi += 0.003
+          globe?.update({ phi, width: width * dpr, height: width * dpr })
 
-        // Drive each photo card's opacity ourselves so the fade-out distance
-        // from the globe's edge is tunable (see FADE_START/FADE_END above),
-        // instead of relying on cobe's built-in binary front/back visibility.
-        for (const p of points) {
-          const dot = facingDot(p.vec, phi, THETA)
-          const opacity = clamp01((dot - FADE_END) / (FADE_START - FADE_END))
-          const el = cardRefs.current[p.id]
-          if (el) el.style.opacity = String(opacity)
+          // Drive each photo card's opacity ourselves so the fade-out distance
+          // from the globe's edge is tunable (see FADE_START/FADE_END above),
+          // instead of relying on cobe's built-in binary front/back visibility.
+          for (const p of points) {
+            const dot = facingDot(p.vec, phi, THETA)
+            const opacity = clamp01((dot - FADE_END) / (FADE_START - FADE_END))
+            const el = cardRefs.current[p.id]
+            if (el) el.style.opacity = String(opacity)
+          }
         }
 
         frameId = requestAnimationFrame(animate)
       }
       frameId = requestAnimationFrame(animate)
+
+      return () => observer.disconnect()
     }
 
-    void init()
+    let cleanupObserver: (() => void) | undefined
+    void init().then((cleanup) => {
+      if (destroyed) cleanup?.()
+      else cleanupObserver = cleanup
+    })
 
     return () => {
       destroyed = true
       window.removeEventListener('resize', onResize)
       if (frameId) cancelAnimationFrame(frameId)
+      cleanupObserver?.()
       globe?.destroy()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,7 +204,15 @@ export const GlobeCanvas: React.FC<Props> = ({ travels }) => {
             }
           >
             {typeof t.photo === 'object' && (
-              <Media fill imgClassName="object-cover" resource={t.photo} />
+              <Media
+                fill
+                imgClassName="object-cover"
+                resource={t.photo}
+                // Cards render at ~80-96px CSS width; without an explicit `size`,
+                // <Media> falls back to full-breakpoint sizes (up to ~1920w),
+                // making next/image fetch far larger images than this tiny card needs.
+                size="(min-width: 768px) 192px, 160px"
+              />
             )}
           </div>
         ))}
