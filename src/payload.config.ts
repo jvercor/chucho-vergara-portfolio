@@ -8,6 +8,7 @@ import { Categories } from './collections/Categories'
 import { Certification } from './collections/Certification'
 import { Education } from './collections/Education'
 import { Experience } from './collections/Experience'
+import { JourneyPhases } from './collections/JourneyPhases'
 import { Language } from './collections/Language'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -90,6 +91,7 @@ export default buildConfig({
     Projects,
     Stack,
     Experience,
+    JourneyPhases,
     Education,
     Certification,
     Language,

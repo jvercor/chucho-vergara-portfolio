@@ -22,6 +22,10 @@ _Avoid_: Featured works, pinned projects, highlighted projects
 A dedicated page displaying Experience, Education, Skills, and Languages in a traditional resume layout.
 _Avoid_: CV, about
 
+**About Page**:
+A fixed hardcoded route at `/about`. Layout: a Terminal Hero, followed by the Journey Phases timeline. SEO metadata and optional trailing CMS blocks are supplied by a companion `Pages` collection document with slug `about`, following the same companion-doc pattern as the Resume and Projects pages (see ADR 0002).
+_Avoid_: Bio page, profile page
+
 **Project**:
 A portfolio piece managed as a Payload collection. Has a title, short description, cover image, Stack tags, live URL, repo URL, client location, launch date, and rich-text body. Sorted by launch date descending.
 _Avoid_: Work, case study, portfolio item
@@ -43,7 +47,7 @@ A Stack entry with category `programming-language` (e.g., TypeScript, Rust, Go, 
 _Avoid_: Language (that term is reserved for spoken/human languages)
 
 **Technical Stack**:
-The Resume page section that aggregates all Stack items referenced by Experience entries, grouped by their category into four columns: Programming Languages, Frameworks & Libs, Infrastructure, Databases. Items are de-duplicated across Experience entries and ordered by recency — items from the most recent Experience (highest start year) appear first within each category column.
+The Resume page section that aggregates all Stack items referenced by Experience entries and Journey Phases, grouped by their category into four columns: Programming Languages, Frameworks & Libs, Infrastructure, Databases. Items are de-duplicated across both sources and ordered by recency — items from the most recent entry (highest start year, across Experience and Journey Phases combined) appear first within each category column.
 _Avoid_: Skills section, tech grid, technology list
 
 **Post**:
@@ -87,6 +91,12 @@ _Avoid_: Certificate, award, badge
 **Language**:
 A spoken/human language entry with proficiency level. Belongs to the Resume page. Level is a fixed select: Native, Fluent, Advanced, Intermediate, Basic. Ordered by admin-defined sort in Payload.
 _Avoid_: Programming language, tongue
+
+### About page content
+
+**Journey Phases**:
+A narrative-chapter entry managed as a Payload collection, displayed as a timeline on the About page. Fields: title (the phase's name, e.g. "The Discovery"), location (free text, e.g. "France • Israel"), start year, end year (optional), isCurrent boolean (renders end year as "Present"; a phase with matching start/end year renders as a single year, not a range), a single rich-text description paragraph (inline formatting allowed), and a has-many relationship to Stack items (the tech/skills picked up during that phase). Displayed sorted by start year ascending (oldest phase first) — distinct from Experience, which sorts most-recent-first. Journey Phases' Stack items also feed the Technical Stack aggregation on the Resume page.
+_Avoid_: Life chapters, milestones, timeline entries
 
 ### Theme
 

@@ -73,6 +73,7 @@ export interface Config {
     projects: Project;
     stack: Stack;
     experience: Experience;
+    'journey-phases': JourneyPhase;
     education: Education;
     certifications: Certification;
     languages: Language;
@@ -101,6 +102,7 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     stack: StackSelect<false> | StackSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
+    'journey-phases': JourneyPhasesSelect<false> | JourneyPhasesSelect<true>;
     education: EducationSelect<false> | EducationSelect<true>;
     certifications: CertificationsSelect<false> | CertificationsSelect<true>;
     languages: LanguagesSelect<false> | LanguagesSelect<true>;
@@ -1008,6 +1010,48 @@ export interface Experience {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-phases".
+ */
+export interface JourneyPhase {
+  id: number;
+  /**
+   * The name of this chapter of your life, e.g. "The Discovery".
+   */
+  title: string;
+  /**
+   * Where this phase took place, e.g. "France • Israel".
+   */
+  location: string;
+  startYear: number;
+  isCurrent?: boolean | null;
+  /**
+   * Leave empty if this is your current phase. Set equal to Start Year for a single-year phase.
+   */
+  endYear?: number | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Programming Languages, Frameworks, Infrastructure, and Databases picked up during this phase.
+   */
+  stack?: (number | Stack)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "education".
  */
 export interface Education {
@@ -1243,6 +1287,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'experience';
         value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'journey-phases';
+        value: number | JourneyPhase;
       } | null)
     | ({
         relationTo: 'education';
@@ -1598,6 +1646,21 @@ export interface ExperienceSelect<T extends boolean = true> {
         content?: T;
         id?: T;
       };
+  stack?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-phases_select".
+ */
+export interface JourneyPhasesSelect<T extends boolean = true> {
+  title?: T;
+  location?: T;
+  startYear?: T;
+  isCurrent?: T;
+  endYear?: T;
+  description?: T;
   stack?: T;
   updatedAt?: T;
   createdAt?: T;

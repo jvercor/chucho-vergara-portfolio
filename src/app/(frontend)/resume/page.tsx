@@ -20,41 +20,56 @@ export default async function ResumePage() {
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
 
-  const [companionPage, experiencesResult, educationsResult, certificationsResult, languagesResult] =
-    await Promise.all([
-      queryResumePage(),
-      payload.find({
-        collection: 'experience',
-        depth: 1,
-        draft: false,
-        limit: 100,
-        overrideAccess: true,
-        sort: '-startYear',
-      }),
-      payload.find({
-        collection: 'education',
-        depth: 0,
-        draft: false,
-        limit: 100,
-        overrideAccess: true,
-      }),
-      payload.find({
-        collection: 'certifications',
-        depth: 0,
-        draft: false,
-        limit: 100,
-        overrideAccess: true,
-      }),
-      payload.find({
-        collection: 'languages',
-        depth: 0,
-        draft: false,
-        limit: 100,
-        overrideAccess: true,
-      }),
-    ])
+  const [
+    companionPage,
+    experiencesResult,
+    journeyPhasesResult,
+    educationsResult,
+    certificationsResult,
+    languagesResult,
+  ] = await Promise.all([
+    queryResumePage(),
+    payload.find({
+      collection: 'experience',
+      depth: 1,
+      draft: false,
+      limit: 100,
+      overrideAccess: true,
+      sort: '-startYear',
+    }),
+    payload.find({
+      collection: 'journey-phases',
+      depth: 1,
+      draft: false,
+      limit: 100,
+      overrideAccess: true,
+      sort: '-startYear',
+    }),
+    payload.find({
+      collection: 'education',
+      depth: 0,
+      draft: false,
+      limit: 100,
+      overrideAccess: true,
+    }),
+    payload.find({
+      collection: 'certifications',
+      depth: 0,
+      draft: false,
+      limit: 100,
+      overrideAccess: true,
+    }),
+    payload.find({
+      collection: 'languages',
+      depth: 0,
+      draft: false,
+      limit: 100,
+      overrideAccess: true,
+    }),
+  ])
 
   const experiences = experiencesResult.docs
+  const journeyPhases = journeyPhasesResult.docs
   const educations = educationsResult.docs
   const certifications = certificationsResult.docs
   const languages = languagesResult.docs
@@ -80,7 +95,7 @@ export default async function ResumePage() {
         </div>
       </section>
 
-      <TechnicalStack experiences={experiences} />
+      <TechnicalStack experiences={experiences} journeyPhases={journeyPhases} />
 
       {companionPage?.layout && companionPage.layout.length > 0 && (
         <RenderBlocks blocks={companionPage.layout} />

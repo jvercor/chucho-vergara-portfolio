@@ -8,8 +8,8 @@ import * as migration_20260608_180000_add_home_hero_fields from './20260608_1800
 import * as migration_20260608_190000_add_home_hero_code_fields from './20260608_190000_add_home_hero_code_fields';
 import * as migration_20260708_051803 from './20260708_051803';
 import * as migration_20260817_000000_rename_home_hero_to_terminal_hero from './20260817_000000_rename_home_hero_to_terminal_hero';
-
 import * as migration_20260817_000001_add_model_hero_type from './20260817_000001_add_model_hero_type';
+import * as migration_20260831_020056_add_journey_phases from './20260831_020056_add_journey_phases';
 
 export const migrations = [
   {
@@ -55,7 +55,7 @@ export const migrations = [
   {
     up: migration_20260708_051803.up,
     down: migration_20260708_051803.down,
-    name: '20260708_051803'
+    name: '20260708_051803',
   },
   {
     up: migration_20260817_000000_rename_home_hero_to_terminal_hero.up,
@@ -66,5 +66,10 @@ export const migrations = [
     up: migration_20260817_000001_add_model_hero_type.up,
     down: migration_20260817_000001_add_model_hero_type.down,
     name: '20260817_000001_add_model_hero_type',
+  },
+  {
+    up: migration_20260831_020056_add_journey_phases.up,
+    down: migration_20260831_020056_add_journey_phases.down,
+    name: '20260831_020056_add_journey_phases'
   },
 ];

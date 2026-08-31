@@ -1,9 +1,10 @@
 import React from 'react'
-import type { Experience, Stack } from '@/payload-types'
+import type { Experience, JourneyPhase, Stack } from '@/payload-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCode, faLayerGroup, faCloud, faDatabase } from '@fortawesome/free-solid-svg-icons'
 
 type StackItem = Extract<NonNullable<Experience['stack']>[number], object>
+type StackSource = Pick<Experience | JourneyPhase, 'startYear' | 'stack'>
 
 const CATEGORY_CONFIG = {
   'programming-language': {
@@ -34,7 +35,7 @@ const CATEGORY_CONFIG = {
 
 type Category = keyof typeof CATEGORY_CONFIG
 
-function aggregateStack(experiences: Experience[]): Map<Category, StackItem[]> {
+function aggregateStack(sources: StackSource[]): Map<Category, StackItem[]> {
   const seen = new Set<number>()
   const grouped = new Map<Category, StackItem[]>()
 
@@ -42,10 +43,13 @@ function aggregateStack(experiences: Experience[]): Map<Category, StackItem[]> {
     grouped.set(category, [])
   }
 
-  // experiences arrive sorted by startYear desc — first occurrence of an item wins
-  for (const exp of experiences) {
-    if (!exp.stack) continue
-    for (const item of exp.stack) {
+  // Combine Experience and Journey Phase entries, most recent startYear first —
+  // first occurrence of a Stack item (across either source) wins.
+  const sorted = [...sources].sort((a, b) => b.startYear - a.startYear)
+
+  for (const source of sorted) {
+    if (!source.stack) continue
+    for (const item of source.stack) {
       if (typeof item !== 'object') continue
       if (seen.has(item.id)) continue
       seen.add(item.id)
@@ -138,8 +142,14 @@ function CategoryCard({
   )
 }
 
-export function TechnicalStack({ experiences }: { experiences: Experience[] }) {
-  const grouped = aggregateStack(experiences)
+export function TechnicalStack({
+  experiences,
+  journeyPhases = [],
+}: {
+  experiences: Experience[]
+  journeyPhases?: JourneyPhase[]
+}) {
+  const grouped = aggregateStack([...experiences, ...journeyPhases])
 
   const hasAnyItems = Array.from(grouped.values()).some((items) => items.length > 0)
   if (!hasAnyItems) return null
